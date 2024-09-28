@@ -1,4 +1,4 @@
-import { ChangeEvent,  useEffect } from "react"
+import { ChangeEvent,  useEffect, useRef } from "react"
 import useFormStore from "../../state/form"
 import Icons from "../icons"
 import dataChat from "../../data/chat"
@@ -11,11 +11,13 @@ const InputComponent = () => {
   const date = new Date()
   const sendChat = useChatStore((state) => state.addChat)
   const chat = useChatStore((state) => state.chat)
+  const inputref = useRef<HTMLInputElement>(null)
 
   const handleForm = (e:ChangeEvent<HTMLInputElement>) => {
     const {name,value} = e.target
     setform(name,value)
   }
+
   
 
   type chatStructure = {
@@ -40,6 +42,18 @@ const InputComponent = () => {
     resetform()
   }
 
+  const sendChatWithEnter = () => {
+    if(inputref.current){
+      inputref.current.addEventListener("keypress",(e) => {
+        switch(e.keyCode){
+          case 13:
+            handleSendForm()
+            break;
+        }
+      })
+    }
+  }
+
   useEffect(() => {
     console.log(form)
     console.log(chat) 
@@ -51,7 +65,7 @@ const InputComponent = () => {
             <Icons.plusIcon fontsize="35"/>
         </div>
         <div className='w-11/12 h-12'>
-            <input type='text' onChange={handleForm} className='bg-[#5356FF37] h-full w-full rounded-xl px-2 hover:border-blue-300 focus:border-blue-400 border border-blue-400 shadow appearance-none focus:outline-none placeholder:text-gray-300 placeholder:text-opacity-60 text-white' placeholder="Type your text" name='textchat' value={form.textchat} />
+            <input type='text' ref={inputref} onChange={handleForm} onKeyPress={sendChatWithEnter} className='bg-[#5356FF37] h-full w-full rounded-xl px-2 hover:border-blue-300 focus:border-blue-400 border border-blue-400 shadow appearance-none focus:outline-none placeholder:text-gray-300 placeholder:text-opacity-60 text-white' placeholder="Type your text" name='textchat' value={form.textchat} />
         </div>
         <div className='cursor-pointer' onClick={handleSendForm}>
             {

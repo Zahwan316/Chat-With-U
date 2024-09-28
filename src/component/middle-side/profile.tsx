@@ -1,6 +1,14 @@
+import useComponentStore from "../../state/component"
+
 const ProfileChatComponent = () => {
+  const setInfoMenuActive = useComponentStore((state) => state.setInfoMenuActive)
+
+  const handleInfoMenuActive = () => {
+    setInfoMenuActive()
+  }
+
   return(
-     <div className='w-full h-16 border-b flex items-center p-4'>
+     <div className='w-full h-16 border-b flex items-center p-4 cursor-pointer' onClick={handleInfoMenuActive}>
         <div className='w-12 flex items-center mx-2'>
             <img src='./img/raiden.jpg' className='rounded-full w-full h-full' />
         </div>

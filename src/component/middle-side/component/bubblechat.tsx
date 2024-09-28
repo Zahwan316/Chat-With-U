@@ -20,10 +20,6 @@ const BubbleChatComponent = (props: chatProps) => {
     }
   },[])
 
-  useEffect(() => {
-    console.log(elwidth)
-  })
-
   const handleReadmore = () => {
     setreadmore(!readmore)
   }
@@ -31,7 +27,7 @@ const BubbleChatComponent = (props: chatProps) => {
   return(
     <div className={`flex ${props.sentBy === "me" && "justify-end"}`}>
         <div className='rounded-xl relative block right-0 bg-[#D9D9D925] min-h-12  min-w-16 w-auto max-w-md mb-4 py-4' ref={elref}>
-            <div className={`px-4 ${elwidth >= 448 ? "mr-0" : "mr-12"} ${!readmore ? "line-clamp-6" : "line-clamp-none"}`}>
+            <div className={`px-4 ${elwidth >= 448 && props.type === "text" ? "mr-0" : "mr-12"} ${!readmore ? "line-clamp-6" : "line-clamp-none"}`}>
             {
                 props.type === "text" ?
                 <p>{props.body}</p>
