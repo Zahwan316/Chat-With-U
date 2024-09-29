@@ -1,16 +1,20 @@
 import useComponentStore from "../../state/component"
 import Icons from "../icons"
 import MediaComponent from "./component/media"
+import { motion } from 'framer-motion';
+
 
 const InfoComponent = () => {
   const setInfoMenuActive = useComponentStore((state) => state.setInfoMenuActive)
-
+  
   const handleInfoMenuActive = () => {
     setInfoMenuActive()
   }
 
+  
+
   return(
-    <div className="w-2/4 border-l flex flex-col items-center border-white">
+    <motion.div initial={{width:0,opacity:0}} animate={{width:"50%",opacity:1}} exit={{width:0,opacity:0}} className="w-2/4 border-l flex flex-col items-center border-white">
         <div className='h-16 flex items-center w-full px-4 mb-8 justify-between'>
             <div className="cursor-pointer relative" onClick={handleInfoMenuActive}>
                 <Icons.CloseIcon fontsize="20"/>
@@ -29,7 +33,8 @@ const InfoComponent = () => {
 
         </div>
         <MediaComponent />
-    </div>
+        
+    </motion.div>
   )
 }
 

@@ -1,0 +1,98 @@
+import {  useState } from "react"
+import Icons from "../../icons"
+import useComponentStore from "../../../state/component"
+import { AnimatePresence, motion} from "framer-motion"
+
+type menuDesc = {
+    id: number,
+    name: string,
+    title: string
+}
+
+const menu: Array<menuDesc> = [
+    {
+        id:1,
+        name:"image",
+        title:"Image"
+    },
+    {
+        id:2,
+        name:"file",
+        title:"File"
+    },
+]
+
+const dummyImgMenu = [
+    {
+        id:1,
+        img:"./img/Furina.jpeg",
+        sent:"2024/2/1"
+    },
+    {
+        id:2,
+        img:"./img/raiden.jpg",
+        sent:"2024/2/1"
+    },
+    {
+        id:3,
+        img:"./img/takina.jpg",
+        sent:"2024/2/1"
+    },
+]
+
+const MediaMenuMainComponent = () => {
+  const [currMenu,setCurrMenu] = useState<string | undefined>("image")
+  const setHoverMenu = useComponentStore((state) => state.setHoverMenuActive)
+
+  const handleCurrMenu = (e: React.MouseEvent<HTMLElement>) => {
+    const target = e.target as HTMLElement
+    const name = target.attributes.getNamedItem("data-name")?.value
+    setCurrMenu(name)
+  }
+
+  const handleHoverMenu = () => {
+    setHoverMenu()
+  }
+
+  return(
+    <div className='absolute w-full h-full  flex flex-row items-center justify-center '> 
+        <motion.div initial={{ width:0,height:0,opacity: 0 }} animate={{ width:"66%",height:"66%",opacity: 1 }} exit={{ width: 0,height: 0,opacity: 0 }} className='w-2/3 h-2/3 border absolute border-[#ffffff30] backdrop-blur-md py-6 px-4 bg-[#5356FF] bg-opacity-75 z-50 rounded-xl'>
+            <div className='flex mb-4 flex-row justify-between items-center h-auto'>
+                <div>
+
+                </div>
+                <div>
+                    <h2 className='font-bold text-xl'>Media</h2>
+                </div>
+                <div className='cursor-pointer w-12' onClick={handleHoverMenu}>
+                    <Icons.CloseIcon fontsize="20"/>
+                </div>
+            </div>
+            <div className='h-full'>
+                <div className="mb-6 flex flex-row gap-4">
+                    {
+                        menu.map(item => 
+                            <AnimatePresence>
+                                <motion.div  className={`${currMenu === item.name && "bg-blue-500"} py-2 px-6 rounded-lg cursor-pointer drop-shadow-md`} data-name={item.name} onClick={handleCurrMenu}>
+                                    <p className="font-medium text-md" data-name={item.name}>{item.title}</p>
+                                </motion.div>
+                            </AnimatePresence>
+                        )
+                    }
+                </div>
+                <div className='border border-[#FFFFFF40] p-4 bg-[#5356FF] rounded-md w-full h-5/6 flex flex-wrap gap-6'>
+                    {
+                        dummyImgMenu.map((item) => 
+                            <motion.div className='w-36' initial={{display:"none",opacity:0,width:0}} animate={{display:"block",opacity:1,width:144}} exit={{display:"none",opacity:0,width:0}} >
+                                <img src={item.img} className='w-full rounded-sm hover:brightness-75 cursor-pointer transition-all' />
+                            </motion.div>
+                        )
+                    }
+                </div>
+            </div>
+        </motion.div>
+    </div>
+  )
+}
+
+export default MediaMenuMainComponent

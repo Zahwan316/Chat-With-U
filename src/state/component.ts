@@ -1,16 +1,20 @@
 import { create } from "zustand"
 
 type state = {
-    infoMenuActive: boolean
+    infoMenuActive: boolean,
+    hoverMenuActive: boolean
 }
 
 type action = {
-    setInfoMenuActive: () => void
+    setInfoMenuActive: () => void,
+    setHoverMenuActive: () => void
 }
 
 const useComponentStore = create<state & action>((set) => ({
     infoMenuActive:false,
-    setInfoMenuActive:() => set((state) => ({infoMenuActive:!state.infoMenuActive}))
+    hoverMenuActive: false,
+    setInfoMenuActive:() => set((state) => ({infoMenuActive:!state.infoMenuActive})),
+    setHoverMenuActive:() => set((state) => ({hoverMenuActive:!state.hoverMenuActive}))
 }))
 
 export default useComponentStore
