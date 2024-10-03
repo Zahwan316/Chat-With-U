@@ -11,7 +11,7 @@ type action = {
 
 const useFormStore = create<state & action>((set) => ({
     form:{
-        textchat:""
+        
     },
     setform:(name:string,value:string) => set((state) => ({form:{...state.form,[name]:value}})),
     resetform:() => set(() => ({form:{textchat:""}})) 

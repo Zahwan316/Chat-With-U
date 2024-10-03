@@ -1,6 +1,8 @@
 import React, { useState, MouseEventHandler,  useEffect } from 'react';
 import Icons from "../../../icons"
 import {AnimatePresence, motion} from "framer-motion"
+import Cookies from 'js-cookie';
+
 
 type menulist = {
     title: string,
@@ -8,26 +10,31 @@ type menulist = {
     onClick: MouseEventHandler
 }
 
-const MenuList: Array<menulist> = [
-    {
-        title: "Profile",
-        icon:Icons.ProfileIcon ,
-        onClick:() => {}
-    },
-    {
-        title: "Settings",
-        icon:Icons.GearIcon,
-        onClick:() => {}
-    },
-    {
-        title: "Logout",
-        icon:Icons.LogoutIcon ,
-        onClick:() => {}
-    },
-]
-
 const SettingsMenuComponent = () => {
   const [active,setActive] = useState<boolean>(false)  
+
+  const handleLogout = () => {
+    Cookies.remove("token")
+  }
+
+  const MenuList: Array<menulist> = [
+        {
+            title: "Profile",
+            icon:Icons.ProfileIcon ,
+            onClick:() => {}
+        },
+        {
+            title: "Settings",
+            icon:Icons.GearIcon,
+            onClick:() => {}
+        },
+        {
+            title: "Logout",
+            icon:Icons.LogoutIcon ,
+            onClick:handleLogout
+
+        },
+  ]
 
   const handleMenu = () => {
     setActive(!active)
@@ -51,7 +58,7 @@ const SettingsMenuComponent = () => {
                             MenuList.map((item,index) => 
                                 <>
                                     <div className='w-full h-10 flex items-center flex-row cursor-pointer '>
-                                        <div className='mx-2'>
+                                        <div className='mx-2' onClick={item.onClick}>
                                             {item.icon()}
                                         </div>
                                         <p className='font-bold'>{item.title}</p>

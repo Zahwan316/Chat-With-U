@@ -1,9 +1,13 @@
-import { ChangeEvent,  useEffect, useRef } from "react"
+import { ChangeEvent,  useEffect, useRef, useState } from "react"
 import useFormStore from "../../state/form"
 import Icons from "../icons"
 import dataChat from "../../data/chat"
-import useChatStore from "../../state/dummychat"
+import useChatStore from "../../state/chat"
+import { Socket } from "socket.io-client"
+import io from "socket.io-client"
+import useUserStore from "../../state/user"
 
+const socket = io("http://localhost:3000")
 const InputComponent = () => {
   const form = useFormStore((state) => state.form)
   const setform = useFormStore((state) => state.setform)
@@ -12,19 +16,25 @@ const InputComponent = () => {
   const sendChat = useChatStore((state) => state.addChat)
   const chat = useChatStore((state) => state.chat)
   const inputref = useRef<HTMLInputElement>(null)
+  const userinfo = useUserStore((state) => state.userinfo)
+
+  const sendMsg = () => {   
+    socket.emit("message",senderData)
+    resetform()  
+  }
 
   const handleForm = (e:ChangeEvent<HTMLInputElement>) => {
     const {name,value} = e.target
     setform(name,value)
   }
 
-  
-
   type chatStructure = {
     id: number,
     type: "text" | "file",
     body: string,
     time: string,
+    user_target_id?: string,
+    user_from_id: string
     sentBy: "me" | "other",
     file?:string
   }
@@ -35,11 +45,11 @@ const InputComponent = () => {
     body:form?.textchat,
     time:`${date.getHours()}:${date.getMinutes().toString().length == 1 ? "0" : ""}${date.getMinutes()}`,
     sentBy:"me",
+    user_from_id:userinfo?.id
   }
 
   const handleSendForm = () => {
-    sendChat(senderData)
-    resetform()
+    sendMsg()
   }
 
   const sendChatWithEnter = () => {
@@ -55,7 +65,6 @@ const InputComponent = () => {
   }
 
   useEffect(() => {
-    console.log(form)
     console.log(chat) 
   })
 
@@ -69,7 +78,7 @@ const InputComponent = () => {
         </div>
         <div className='cursor-pointer' onClick={handleSendForm}>
             {
-                form?.textchat.length != 0 &&
+                form?.textchat?.length > 0 &&
                 <Icons.sendIcon fontsize="35"/>
 
             }
