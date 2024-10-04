@@ -23,7 +23,7 @@ const LoginComponent = () => {
         const res = await axios.post(`${import.meta.env.VITE_APP_URL}auth/login`,form)
         console.log(res)
         Swal.fire({
-          text:"Login berhasil",
+          title:"Login berhasil",
           icon:"success",
           timer:1000
         })

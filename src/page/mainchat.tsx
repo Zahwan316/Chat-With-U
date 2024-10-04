@@ -1,7 +1,8 @@
+import { memo } from "react"
 import MainChat from "../section/main"
 import {Helmet} from "react-helmet"
 
-const MainPageChat = () => {
+const MainPageChat = memo(() => {
   return(
     <>
         <Helmet>
@@ -11,6 +12,6 @@ const MainPageChat = () => {
         <MainChat />
     </>
   )
-}
+})
 
 export default MainPageChat

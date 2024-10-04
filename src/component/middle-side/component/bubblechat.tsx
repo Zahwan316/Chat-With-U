@@ -1,18 +1,22 @@
 import { useEffect, useRef, useState } from "react"
 import { motion } from 'framer-motion';
+import useUserStore from "../../../state/user";
 
 type chatProps = {
-    id: number,
+    id: string,
     type: "text" | "file",
     body: string,
     time: string,
-    sentBy: "me" | "other"
-    file?: string
+    user_target_id?: string,
+    user_from_id: string
+    sentBy: "me" | "other",
+    file?:string
 }
 
 const BubbleChatComponent = (props: chatProps) => {
   const [readmore,setreadmore] = useState<boolean>(false)
   const [elwidth,setelwidth] = useState<number>(0)
+  const userinfo = useUserStore((state) => state.userinfo)
   const elref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -26,7 +30,7 @@ const BubbleChatComponent = (props: chatProps) => {
   }
 
   return(
-    <div className={`flex ${props.sentBy === "me" && "justify-end"}`}>
+    <div className={`flex ${props.sentBy === "me" || props.user_from_id === userinfo.id && "justify-end"}`}>
         <motion.div initial={{width:0}} animate={{width:"auto"}} whileInView={{opacity:1,width:"auto"}} className='rounded-xl relative block right-0 bg-[#D9D9D925] min-h-12  min-w-16 w-auto max-w-md mb-4 py-4' ref={elref}>
             <motion.div initial={{opacity:0}} animate={{opacity:1}} className={`px-4 ${elwidth >= 448 && props.type === "text" ? "mr-0" : "mr-12"} ${!readmore ? "line-clamp-6" : "line-clamp-none"}`}>
             {
