@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { memo, useEffect, useRef, useState } from "react"
 import { motion } from 'framer-motion';
 import useUserStore from "../../../state/user";
 
@@ -13,7 +13,7 @@ type chatProps = {
     file?:string
 }
 
-const BubbleChatComponent = (props: chatProps) => {
+const BubbleChatComponent = memo((props: chatProps) => {
   const [readmore,setreadmore] = useState<boolean>(false)
   const [elwidth,setelwidth] = useState<number>(0)
   const userinfo = useUserStore((state) => state.userinfo)
@@ -30,8 +30,8 @@ const BubbleChatComponent = (props: chatProps) => {
   }
 
   return(
-    <div className={`flex ${props.sentBy === "me" || props.user_from_id === userinfo.id && "justify-end"}`}>
-        <motion.div initial={{width:0}} animate={{width:"auto"}} whileInView={{opacity:1,width:"auto"}} className='rounded-xl relative block right-0 bg-[#D9D9D925] min-h-12  min-w-16 w-auto max-w-md mb-4 py-4' ref={elref}>
+    <div className={`flex ${props.sentBy === "me" || props.user_from_id === userinfo?.id && "justify-end"}`}>
+        <motion.div initial={{opacity:0}} animate={{opacity:1}} className='rounded-xl relative block right-0 bg-[#D9D9D925] min-h-12  min-w-16 w-auto max-w-md mb-4 py-4' ref={elref}>
             <motion.div initial={{opacity:0}} animate={{opacity:1}} className={`px-4 ${elwidth >= 448 && props.type === "text" ? "mr-0" : "mr-12"} ${!readmore ? "line-clamp-6" : "line-clamp-none"}`}>
             {
                 props.type === "text" ?
@@ -58,6 +58,6 @@ const BubbleChatComponent = (props: chatProps) => {
         </motion.div>
     </div>
   )
-}
+})
 
 export default BubbleChatComponent

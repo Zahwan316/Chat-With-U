@@ -3,6 +3,8 @@ import useChatStore from "../../state/chat"
 import BubbleChatComponent from "./component/bubblechat"
 import { io } from "socket.io-client"
 import useUserStore from "../../state/user"
+import axios from "axios"
+import Cookies from 'js-cookie';
 
 type chat = {
   id: string,
@@ -23,8 +25,8 @@ const MainChatComponent = () => {
   const SessionChat = useChatStore((state) => state.sessionChat)
   const userinfo = useUserStore((state) => state.userinfo)
   const [chatfilter,setchatfilter] = useState<Array<chat>>()
+  const token = Cookies.get("token")
 
- 
 
   useEffect(() =>{
     socketio.on("message",(message) => {
@@ -33,20 +35,49 @@ const MainChatComponent = () => {
   },[])
 
   useEffect(() => {
-    const filtered: chat = chatdata.filter((item) => item?.user_from_id === SessionChat || item?.user_from_id === userinfo?.id && item?.user_target_id === SessionChat || item?.user_target_id === userinfo?.id)
+    const filtered: chat = chatdata.filter((item) => 
+      (item?.user_from_id === SessionChat || item?.user_target_id === userinfo?.id && item?.user_from_id === userinfo?.id || item?.user_target_id === SessionChat) 
+    )
     setchatfilter(filtered)
-  },[chatdata])
+  },[chatdata,SessionChat,userinfo])
  
+
+  //get All chat from this user
   useEffect(() => {
-    console.log(chatfilter)
-  })
+    const getData = async() => {
+      try{  
+        if(chatdata.length === 0 && userinfo){
+          if(userinfo?.id){
+            setTimeout(async() => {
+              const resChat = await axios.get(`${import.meta.env.VITE_APP_URL}message?userfromID=${userinfo?.id}&usertargetID=${userinfo?.id}`)
+              const dataChat = resChat.data.data
+              for(const key in dataChat){
+                addchat(dataChat[key])
+              }
+              console.log(resChat)
+            }, 1500);
+          }
+          
+        }
+      }
+      catch(e){
+        if(import.meta.env.VITE_APP_STAGE === "BUILD"){
+          console.log(e)
+        }
+      }
+    }
+    if(token && userinfo){
+      getData()
+      
+    }
+  },[userinfo])
 
   return(
     <div className={`w-full h-[75vh] p-4 overflow-y-auto relative ${SessionChat === "" && "hidden"}`}>
         {
-            chatfilter?.map((item) => 
-              
+            chatfilter?.map((item) =>            
                 <BubbleChatComponent
+                    key={item.id}
                     id={item.id}
                     body={item.body}
                     sentBy={item.sentBy}

@@ -1,4 +1,6 @@
+import useChatStore from "../../state/chat";
 import useComponentStore from "../../state/component"
+import useUserStore from "../../state/user";
 import Icons from "../icons"
 import MediaComponent from "./component/media"
 import { motion } from 'framer-motion';
@@ -6,12 +8,14 @@ import { motion } from 'framer-motion';
 
 const InfoComponent = () => {
   const setInfoMenuActive = useComponentStore((state) => state.setInfoMenuActive)
-  
+  const sessionChat = useChatStore((state) => state.sessionChat)
+  const allUser = useUserStore((state) => state.alluser)
+  const targetUser = allUser?.find((item) => item?.id === sessionChat)
+
   const handleInfoMenuActive = () => {
     setInfoMenuActive()
   }
 
-  
 
   return(
     <motion.div initial={{width:0,opacity:0}} animate={{width:"50%",opacity:1}} exit={{width:0,opacity:0}} className="w-2/4 border-l flex flex-col items-center border-white">
@@ -24,11 +28,11 @@ const InfoComponent = () => {
         </div>
         <div className='w-full flex items-center justify-center flex-col text-center mb-6'>
             <div className="mb-6">
-                <img src={"./img/raiden.jpg"}  className="rounded-full w-52"/>
+                <img src={targetUser?.image === "/" ? "./img/profile.png" : targetUser?.image}  className="rounded-full w-52"/>
             </div>
             <div>
-                <h2 className='font-bold text-2xl mb-2'>Raiden</h2>
-                <p>Raiden@gmail.com</p>
+                <h2 className='font-bold text-2xl mb-2'>{targetUser?.username}</h2>
+                <p>{targetUser?.email}</p>
             </div>
 
         </div>

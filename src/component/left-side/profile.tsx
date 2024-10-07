@@ -3,7 +3,7 @@ import MenuProfileComponent from "./component/menu"
 
 const ProfileLeftSideComponent = () => {
   const userinfo = useUserStore((state) => state.userinfo)
-
+  
   return(
     <div className='w-full h-16 border-b border-white py-2 px-4 flex items-center flex-row'>
         <div className='w-32 flex flex-row items-center gap-2 '>

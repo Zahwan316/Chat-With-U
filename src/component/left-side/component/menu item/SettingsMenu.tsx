@@ -2,6 +2,7 @@ import React, { useState, MouseEventHandler,  useEffect } from 'react';
 import Icons from "../../../icons"
 import {AnimatePresence, motion} from "framer-motion"
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 
 type menulist = {
@@ -12,9 +13,11 @@ type menulist = {
 
 const SettingsMenuComponent = () => {
   const [active,setActive] = useState<boolean>(false)  
+  const navigate = useNavigate()
 
   const handleLogout = () => {
     Cookies.remove("token")
+    navigate("/login")
   }
 
   const MenuList: Array<menulist> = [
@@ -41,7 +44,7 @@ const SettingsMenuComponent = () => {
   }
 
   useEffect(() => {
-    console.log(active)
+    //console.log(active)
   })
 
   return(
@@ -57,8 +60,8 @@ const SettingsMenuComponent = () => {
                         {
                             MenuList.map((item,index) => 
                                 <>
-                                    <div className='w-full h-10 flex items-center flex-row cursor-pointer '>
-                                        <div className='mx-2' onClick={item.onClick}>
+                                    <div className='w-full h-10 flex items-center flex-row cursor-pointer ' onClick={item.onClick}>
+                                        <div className='mx-2' >
                                             {item.icon()}
                                         </div>
                                         <p className='font-bold'>{item.title}</p>
