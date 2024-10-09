@@ -5,6 +5,7 @@ import { io } from "socket.io-client"
 import useUserStore from "../../state/user"
 import axios from "axios"
 import Cookies from 'js-cookie';
+import dataChat from '../../data/chat';
 
 type chat = {
   id: string,
@@ -12,9 +13,9 @@ type chat = {
   body: string,
   time: string,
   user_target_id?: string,
-  user_from_id: string,
-  created_Date: string,
+  user_from_id: string
   sentBy: "me" | "other",
+  created_Date: string,
   file?:string
 }
 
@@ -52,9 +53,13 @@ const MainChatComponent = () => {
               const resChat = await axios.get(`${import.meta.env.VITE_APP_URL}message?userfromID=${userinfo?.id}&usertargetID=${userinfo?.id}`)
               const dataChat = resChat.data.data
               for(const key in dataChat){
-                addchat(dataChat[key])
+                const newChat:chat = dataChat[key]
+                if(dataChat[key].user_from_id === userinfo?.id){
+                   newChat.sentBy = "me"
+                  }
+                  addchat(dataChat[key])
+                console.log(dataChat[key])
               }
-              console.log(resChat)
             }, 1500);
           }
           

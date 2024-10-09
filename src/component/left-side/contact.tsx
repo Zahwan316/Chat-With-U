@@ -31,14 +31,29 @@ const ContactComponent = () => {
       const dateB = new Date(b.created_Date || "").getTime()
       return dateA - dateB
     })
-    const userWhoChat: Array<Data> = chatDateSort.filter((item,index,self) => index === self.findIndex((t) => t.user_from_id === item.user_from_id))
-    setfilteredChat(userWhoChat)
+
+     const uniqueChat = chatDateSort.filter((item, index, self) => 
+      index === self.findIndex((t) => (
+        (t.user_from_id === item.user_from_id && t.user_target_id === item.user_target_id) ||
+        (t.user_from_id === item.user_target_id && t.user_target_id === item.user_from_id)
+      ))
+    );
+
+   const userWhoChat: Array<Data> = uniqueChat.filter(
+      (item) => item.user_from_id !== userinfo.id || item.user_target_id === userinfo.id
+    );
+
+    console.log("unique chat :",uniqueChat)
+
+    setfilteredChat(uniqueChat)
   },[chat])
 
   const handleSessionChat = (e:React.MouseEvent<HTMLElement>) => {
     const target = e.target as HTMLElement
     const id = target.attributes.getNamedItem("data-id")?.value 
-    setSessionChat(id as string)
+    const target_id = target.attributes.getNamedItem("data-user-target-id")?.value 
+    setSessionChat(id === userinfo.id ? target_id as string: id as string)
+
   }
 
   useEffect(() => {
@@ -49,23 +64,50 @@ const ContactComponent = () => {
     <div className='w-full h-[83vh] relative'>
         {
             filteredChat.map((item: Data) => 
-              allUser.map((items) => 
-                item?.user_from_id === items?.id &&
-                item?.user_from_id != userinfo?.id &&
-                <ContactItemComponent 
-                  body={item.body}
-                  id={item.id}
-                  onClick={handleSessionChat}
-                  user_from_id={item.user_from_id}
-                  time={item.time}
-                  type={item.type}
-                  username={items.username}
-                  group_id={item.created_Date}
-                  key={item.id}
-                  sentBy={item.sentBy}
-                  user_target_id={item.user_target_id}
-                  img={items?.image === "/" ? "./img/profile.png" : items?.image}
-                />
+              allUser.map((items) => {
+                if(item?.user_from_id != userinfo.id){
+                  if(item?.user_from_id === items?.id){
+                    return(
+                      <ContactItemComponent 
+                        body={item.body}
+                        id={item.id}
+                        onClick={handleSessionChat}
+                        user_from_id={item.user_from_id}
+                        time={item.time}
+                        type={item.type}
+                        username={items.username}
+                        group_id={item.created_Date}
+                        key={item.id}
+                        sentBy={item.sentBy}
+                        user_target_id={item.user_target_id}
+                        img={items?.image === "/" ? "./img/profile.png" : items?.image}
+                      />
+                    )
+                  }
+                  
+                }
+                else if(item?.user_target_id != userinfo.id){
+                  if(item?.user_target_id === items?.id){
+                    return(
+                      <ContactItemComponent 
+                        body={item.body}
+                        id={item.id}
+                        onClick={handleSessionChat}
+                        user_from_id={item.user_from_id}
+                        time={item.time}
+                        type={item.type}
+                        username={items.username}
+                        group_id={item.created_Date}
+                        key={item.id}
+                        sentBy={item.sentBy}
+                        user_target_id={item.user_target_id}
+                        img={items?.image === "/" ? "./img/profile.png" : items?.image}
+                      />
+                    )
+                  }
+                }
+              }
+                //item?.user_from_id !== userinfo?.id  &&
               )
             )
         }

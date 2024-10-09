@@ -30,7 +30,7 @@ const BubbleChatComponent = memo((props: chatProps) => {
   }
 
   return(
-    <div className={`flex ${props.sentBy === "me" || props.user_from_id === userinfo?.id && "justify-end"}`}>
+    <div className={`flex ${props.sentBy === "me" || props.user_from_id === userinfo?.id ? "justify-end" : ""}`}>
         <motion.div initial={{opacity:0}} animate={{opacity:1}} className='rounded-xl relative block right-0 bg-[#D9D9D925] min-h-12  min-w-16 w-auto max-w-md mb-4 py-4' ref={elref}>
             <motion.div initial={{opacity:0}} animate={{opacity:1}} className={`px-4 ${elwidth >= 448 && props.type === "text" ? "mr-0" : "mr-12"} ${!readmore ? "line-clamp-6" : "line-clamp-none"}`}>
             {
