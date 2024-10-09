@@ -18,6 +18,7 @@ const InputComponent = () => {
   const sessionChat = useChatStore((state) => state.sessionChat)
 
   const sendMsg = () => {   
+    
     socket.emit("message",senderData)
     resetform()  
   }
@@ -35,7 +36,7 @@ const InputComponent = () => {
     time: string,
     user_target_id: string,
     user_from_id: string
-    sentBy: "me" | "other",
+    sentBy?: "me" | "other",
     created_Date: string,
     file?:string
   }
@@ -45,7 +46,7 @@ const InputComponent = () => {
     type:"text",
     body:form?.textchat,
     time:`${date.getHours()}:${date.getMinutes().toString().length == 1 ? "0" : ""}${date.getMinutes()}`,
-    sentBy:"me",
+    //sentBy:"me",
     user_from_id:userinfo?.id,
     user_target_id:sessionChat,
     created_Date:date.toISOString()
