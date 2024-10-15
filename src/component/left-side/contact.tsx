@@ -3,19 +3,7 @@ import useChatStore from "../../state/chat"
 import useUserStore from "../../state/user"
 import ContactItemComponent from "./component/contactitem";
 import AddContactButton from "./component/addNewChat";
-
-type Data = {
-    body: string;
-    created_Date?: string;
-    group_id?: string | null;
-    id: string | number;
-    soft_delete?: string | null;
-    time: string;
-    type: string;
-    user_from_id: string;
-    user_target_id?: string | null;
-    sentBy?: string;
-};
+import contactData from "../../types/contactData";
 
 const ContactComponent = () => {
   const chat = useChatStore((state) => state.chat)
@@ -23,7 +11,7 @@ const ContactComponent = () => {
   const setSessionChat = useChatStore((state) => state.setSessionChat)
   const SessionChat = useChatStore((state) => state.sessionChat)
   const allUser = useUserStore((state) => state.alluser)
-  const [filteredChat,setfilteredChat] = useState<Array<Data>>([])
+  const [filteredChat,setfilteredChat] = useState<Array<contactData>>([])
   
   useEffect(() => {
     const chatDateSort = chat.sort((a,b) => {
@@ -39,9 +27,9 @@ const ContactComponent = () => {
       ))
     );
 
-   const userWhoChat: Array<Data> = uniqueChat.filter(
+   /* const userWhoChat: Array<Data> = uniqueChat.filter(
       (item) => item.user_from_id !== userinfo.id || item.user_target_id === userinfo.id
-    );
+    ); */
 
     console.log("unique chat :",uniqueChat)
 
@@ -63,7 +51,7 @@ const ContactComponent = () => {
   return(
     <div className='w-full h-[83vh] relative'>
         {
-            filteredChat.map((item: Data) => 
+            filteredChat.map((item: contactData) => 
               allUser.map((items) => {
                 if(item?.user_from_id != userinfo.id){
                   if(item?.user_from_id === items?.id){

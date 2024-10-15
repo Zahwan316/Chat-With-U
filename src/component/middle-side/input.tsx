@@ -5,6 +5,7 @@ import useChatStore from "../../state/chat"
 import io from "socket.io-client"
 import useUserStore from "../../state/user"
 import {v4 as uuidv4} from "uuid"
+import chat from "../../types/chat"
 
 const socket = io("http://localhost:3000")
 const InputComponent = () => {
@@ -28,25 +29,11 @@ const InputComponent = () => {
     setform(name,value)
   }
 
-
-  type chatStructure = {
-    id: string,
-    type: "text" | "file",
-    body: string,
-    time: string,
-    user_target_id: string,
-    user_from_id: string
-    sentBy?: "me" | "other",
-    created_Date: string,
-    file?:string
-  }
-
-  const senderData: chatStructure = {
+  const senderData: chat = {
     id:uuidv4(),
     type:"text",
     body:form?.textchat,
     time:`${date.getHours()}:${date.getMinutes().toString().length == 1 ? "0" : ""}${date.getMinutes()}`,
-    //sentBy:"me",
     user_from_id:userinfo?.id,
     user_target_id:sessionChat,
     created_Date:date.toISOString()

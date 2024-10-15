@@ -8,14 +8,14 @@ type inputProps = {
     name: string,
     placeholder: string,
     width?: string,
-    error?: string,
+    error?: string | undefined | false,
     usingIcon: boolean
     onClick?: React.MouseEventHandler
 }
 
 const InputComponent = memo((props: inputProps) => {
   return(
-    <div className='w-full gap-2 justify-center mb-4 flex flex-col relative'>
+    <div className={`w-[${props.width}] gap-2 justify-center mb-4 flex flex-col relative`}>
         <motion.input whileFocus={{backgroundColor:"#5356FF90"}} type={props.type} onChange={props.onChange} name={props.name} placeholder={props.placeholder} className={`w-full bg-[#5356FF40] p-3 ${props.usingIcon && "pr-10"} outline-none rounded-md placeholder-[#f4f4f490] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`} />
         {
           props.usingIcon &&

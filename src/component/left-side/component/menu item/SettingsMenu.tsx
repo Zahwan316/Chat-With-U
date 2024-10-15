@@ -3,6 +3,7 @@ import Icons from "../../../icons"
 import {AnimatePresence, motion} from "framer-motion"
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+import useChatStore from '../../../../state/chat';
 
 
 type menulist = {
@@ -14,10 +15,15 @@ type menulist = {
 const SettingsMenuComponent = () => {
   const [active,setActive] = useState<boolean>(false)  
   const navigate = useNavigate()
+  const removeAllChat = useChatStore((state) => state.removeAllChat)
 
   const handleLogout = () => {
     Cookies.remove("token")
-    navigate("/login")
+    //removeAllChat()
+    setTimeout(() => {
+        window.location.href = "/login"
+        //navigate("/login")
+    },500)
   }
 
   const MenuList: Array<menulist> = [

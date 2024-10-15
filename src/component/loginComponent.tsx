@@ -6,6 +6,7 @@ import axios from "axios"
 import Swal from "sweetalert2"
 import Cookies from "js-cookie"
 import { useNavigate } from "react-router-dom"
+import BoxLoginRegister from "./box/boxLoginRegister"
 
 type errorState = {
   email: string,
@@ -78,10 +79,9 @@ const LoginComponent = () => {
   },[])
 
   return(
-    <div className='w-[20%] h-auto  border border-[#ffffff30] rounded-2xl bg-gradient-to-br from-[#ffffff50] to-[#1d4ed820] bg-opacity-15 backdrop-blur-lg py-4 px-6'>
-        <div className='w-full h-16 flex justify-center items-center mb-2'>
-            <h2 className='font-bold text-xl'>Login</h2>
-        </div>
+    <BoxLoginRegister
+      title='Login'
+    >
         <div className='w-full'>   
           <InputComponent 
               name="email"
@@ -90,6 +90,7 @@ const LoginComponent = () => {
               type="text"
               width="56px"
               error={Object.entries(error).length != 0 && error?.email}
+              usingIcon={false}
           />
           <InputComponent 
               name="password"
@@ -98,10 +99,11 @@ const LoginComponent = () => {
               type="password"
               width="56px"
               error={Object.entries(error).length != 0 && error?.password}
+              usingIcon={false}
           />
         </div>
         <div className='mb-10'>
-          <p className='text-[#e7e6e6] text-sm'>Belum mempunyai akun? <a className='text-[#05BDF8]'>Registrasi Sekarang</a></p>
+          <p className='text-[#e7e6e6] text-sm'>Belum mempunyai akun? <a className='text-[#05BDF8] cursor-pointer' onClick={() => {navigate("/register")}}>Registrasi Sekarang</a></p>
         </div>
         <div className=''>
           <ButtonComponent 
@@ -110,7 +112,9 @@ const LoginComponent = () => {
             width="full"
           />
         </div>
-    </div>
+    </BoxLoginRegister>
+        
+    
   )
 }
 

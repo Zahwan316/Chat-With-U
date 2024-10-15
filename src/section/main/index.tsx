@@ -11,6 +11,7 @@ import useChatStore from "../../state/chat";
 import { FourSquare } from "react-loading-indicators";
 import LoadingComponent from "../../component/loading/loading";
 import NewChatComponent from "../../component/floating-window/newchat";
+import getChat from "../../services/getChat";
 
 type expectedResponseChat = {
   id: string,
@@ -40,6 +41,23 @@ const MainChat = () => {
   const token = Cookies.get("token")
   const location = useLocation()
 
+  //get this user current chat
+  useEffect(() => {
+    const getData = async() => {
+      try{  
+        getChat({userInfo,chat,addChat})
+      }
+      catch(e){
+        if(import.meta.env.VITE_APP_STAGE === "BUILD"){
+          console.log(e)
+        }
+      }
+    }
+    if(token && userInfo){
+      getData()
+      
+    }
+  },[userInfo])
 
 
   useEffect(() => {
@@ -54,7 +72,7 @@ const MainChat = () => {
           })
         
           if(allUser.length === 0){
-            const resUser = await axios.get(`${import.meta.env.VITE_APP_URL}user`)
+            const resUser = await axios.get(`${import.meta.env.VITE_APP_URL}api/user`)
             const datauser = resUser.data.data
             setAllUser(datauser)
           }

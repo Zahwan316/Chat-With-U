@@ -6,18 +6,10 @@ import useUserStore from "../../state/user"
 import axios from "axios"
 import Cookies from 'js-cookie';
 import dataChat from '../../data/chat';
+import chat from "../../types/chat"
+import getChat from "../../services/getChat"
+import ConsoleDebug from "../../function/debugConsole"
 
-type chat = {
-  id: string,
-  type: "text" | "file",
-  body: string,
-  time: string,
-  user_target_id?: string,
-  user_from_id: string
-  sentBy: "me" | "other",
-  created_Date: string,
-  file?:string
-}
 
 const socketio = io("http://localhost:3000")
 const MainChatComponent = () => {
@@ -44,26 +36,11 @@ const MainChatComponent = () => {
  
 
   //get All chat from this user
-  useEffect(() => {
+
+  /* useEffect(() => {
     const getData = async() => {
       try{  
-        if(chatdata.length === 0 && userinfo){
-          if(userinfo?.id){
-            setTimeout(async() => {
-              const resChat = await axios.get(`${import.meta.env.VITE_APP_URL}message?userfromID=${userinfo?.id}&usertargetID=${userinfo?.id}`)
-              const dataChat = resChat.data.data
-              for(const key in dataChat){
-                const newChat:chat = dataChat[key]
-                if(dataChat[key].user_from_id === userinfo?.id){
-                   newChat.sentBy = "me"
-                  }
-                  addchat(dataChat[key])
-                console.log(dataChat[key])
-              }
-            }, 1500);
-          }
-          
-        }
+        getChat({userinfo,chatdata,addchat})
       }
       catch(e){
         if(import.meta.env.VITE_APP_STAGE === "BUILD"){
@@ -75,7 +52,11 @@ const MainChatComponent = () => {
       getData()
       
     }
-  },[userinfo])
+  },[userinfo]) */
+
+  useEffect(() => {
+   // ConsoleDebug(userinfo)
+  })
 
   return(
     <div className={`w-full h-[75vh] p-4 overflow-y-auto relative ${SessionChat === "" && "hidden"}`}>

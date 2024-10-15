@@ -1,32 +1,23 @@
 import { create } from "zustand";
-
-type chatStructure = {
-    id: string,
-    type: "text" | "file",
-    body: string,
-    time: string,
-    user_target_id?: string,
-    user_from_id: string
-    sentBy: "me" | "other",
-    created_Date: string,
-    file?:string
-}
+import chat from "../types/chat";
 
 type state = {
-    chat:Array<chatStructure>,
+    chat:Array<chat>,
     sessionChat: string
 }
 
 type action = {
-    addChat:(chatvalue:chatStructure) => void,
-    setSessionChat:(data: string) => void
+    addChat:(chatvalue:chat) => void,
+    setSessionChat:(data: string) => void,
+    removeAllChat:() => void,
 }
 
 const useChatStore = create<state & action>((set) => ({
     chat:[],
     sessionChat:"",
     addChat:(chatvalue) => set((state) => ({chat:[...state.chat,chatvalue]})),
-    setSessionChat:(data: string) => set(() => ({sessionChat:data}))
+    setSessionChat:(data: string) => set(() => ({sessionChat:data})),
+    removeAllChat:() => set(() => ({chat:[]})),
 }))
 
 export default useChatStore

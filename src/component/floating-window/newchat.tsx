@@ -28,7 +28,7 @@ const NewChatComponent = () => {
 
   const handleSearchUser = async() => {
     try{
-        const res = await axios.get(`${import.meta.env.VITE_APP_URL}user/${form?.no_telepon}`)
+        const res = await axios.get(`${import.meta.env.VITE_APP_URL}api/user/${form?.no_telepon}`)
         const data = res.data.data
         setsearcheduser(data)
         setsearched(true)
@@ -91,6 +91,7 @@ const NewChatComponent = () => {
                     name="no_telepon"
                     onChange={handleInput}
                     onClick={handleSearchUser}
+                    width="100%"
                 />
             </div>
         </div>
