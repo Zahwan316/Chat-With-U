@@ -54,7 +54,7 @@ const RegisterMainComponent = () => {
   const handleRegister = async() => {
     try{
         if(validateInput() === 0){
-            const res = await axios.post(`${import.meta.env.VITE_APP_URL}api/user`,form)
+            const res = await axios.post(`${import.meta.env.VITE_APP_URL}auth/register`,form)
             Swal.fire({
                 text:res.data?.message,
                 icon:"success",

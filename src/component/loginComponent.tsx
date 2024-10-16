@@ -7,6 +7,7 @@ import Swal from "sweetalert2"
 import Cookies from "js-cookie"
 import { useNavigate } from "react-router-dom"
 import BoxLoginRegister from "./box/boxLoginRegister"
+import ErrorNotification from "../function/errorSwal"
 
 type errorState = {
   email: string,
@@ -59,11 +60,7 @@ const LoginComponent = () => {
         }
       }
       catch(e){
-        console.log(e)
-        Swal.fire({
-          text:e.response.message,
-          icon:"error"
-        })
+       ErrorNotification(e)
       }
     }
     send()  

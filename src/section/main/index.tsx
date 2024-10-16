@@ -72,7 +72,11 @@ const MainChat = () => {
           })
         
           if(allUser.length === 0){
-            const resUser = await axios.get(`${import.meta.env.VITE_APP_URL}api/user`)
+            const resUser = await axios.get(`${import.meta.env.VITE_APP_URL}api/user`,{
+              "headers":{
+                "Authorization":`Bearer ${token}`
+              }
+            })
             const datauser = resUser.data.data
             setAllUser(datauser)
           }

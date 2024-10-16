@@ -6,8 +6,9 @@ type chat = {
     user_target_id?: string,
     user_from_id: string
     created_Date: string,
-    sent_by: "me" | "other"
-    file?:string
+    sent_by?: "me" | "other"
+    file?:string,
+    token?: string
   }
 
 export default chat

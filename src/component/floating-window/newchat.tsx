@@ -9,6 +9,7 @@ import axios from "axios"
 import useUserStore from "../../state/user"
 import { motion } from 'framer-motion';
 import useChatStore from "../../state/chat"
+import Cookies from 'js-cookie';
 
 const NewChatComponent = () => {
   const setNewChatMenuActive = useComponentStore((state) => state.setNewChatMenuActive)
@@ -20,6 +21,7 @@ const NewChatComponent = () => {
   const setSessionChat = useChatStore((state) => state.setSessionChat)
   const userinfo = useUserStore((state) => state.userinfo)
   const [description,setdescription] = useState<string>()
+  const token = Cookies.get("token")
 
   const handleInput = (e:ChangeEvent<HTMLInputElement>) => {
     const {name,value} = e.target
@@ -28,7 +30,11 @@ const NewChatComponent = () => {
 
   const handleSearchUser = async() => {
     try{
-        const res = await axios.get(`${import.meta.env.VITE_APP_URL}api/user/${form?.no_telepon}`)
+        const res = await axios.get(`${import.meta.env.VITE_APP_URL}api/user/${form?.no_telepon}`,{
+            "headers":{
+              "Authorization":`Bearer ${token}`
+            }
+          })
         const data = res.data.data
         setsearcheduser(data)
         setsearched(true)

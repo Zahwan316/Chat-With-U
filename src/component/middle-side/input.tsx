@@ -6,6 +6,7 @@ import io from "socket.io-client"
 import useUserStore from "../../state/user"
 import {v4 as uuidv4} from "uuid"
 import chat from "../../types/chat"
+import Cookies from 'js-cookie';
 
 const socket = io("http://localhost:3000")
 const InputComponent = () => {
@@ -17,6 +18,7 @@ const InputComponent = () => {
   const inputref = useRef<HTMLInputElement>(null)
   const userinfo = useUserStore((state) => state.userinfo)
   const sessionChat = useChatStore((state) => state.sessionChat)
+  const token = Cookies.get("token")
 
   const sendMsg = () => {   
     
@@ -36,7 +38,8 @@ const InputComponent = () => {
     time:`${date.getHours()}:${date.getMinutes().toString().length == 1 ? "0" : ""}${date.getMinutes()}`,
     user_from_id:userinfo?.id,
     user_target_id:sessionChat,
-    created_Date:date.toISOString()
+    created_Date:date.toISOString(),
+    token: token
   }
 
   const handleSendForm = () => {
