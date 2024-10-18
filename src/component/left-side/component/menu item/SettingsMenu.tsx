@@ -4,6 +4,7 @@ import {AnimatePresence, motion} from "framer-motion"
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import useChatStore from '../../../../state/chat';
+import useComponentStore from '../../../../state/component';
 
 
 type menulist = {
@@ -16,6 +17,7 @@ const SettingsMenuComponent = () => {
   const [active,setActive] = useState<boolean>(false)  
   const navigate = useNavigate()
   const removeAllChat = useChatStore((state) => state.removeAllChat)
+  const setProfileMenuActive = useComponentStore((state) => state.setProfileMenuActive)
 
   const handleLogout = () => {
     Cookies.remove("token")
@@ -26,11 +28,16 @@ const SettingsMenuComponent = () => {
     },500)
   }
 
+  const handleProfile = () => {
+    setProfileMenuActive()
+    setActive(false)
+  }
+
   const MenuList: Array<menulist> = [
         {
             title: "Profile",
             icon:Icons.ProfileIcon ,
-            onClick:() => {}
+            onClick:() => {handleProfile()}
         },
         {
             title: "Settings",
