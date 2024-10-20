@@ -29,7 +29,7 @@ const getChat = ({chat,userInfo,addChat}: prop) => {
                 addChat(dataChat[key])
               //console.log(dataChat[key])
             }
-          }, 1500);
+          }, 2000);
         }
         
       }

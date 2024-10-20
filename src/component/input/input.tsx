@@ -14,7 +14,7 @@ const InputComponent = memo((props: InputProperty) => {
 
         {
           props.type === "textarea" ?
-          <textarea whileFocus={{backgroundColor:"#5356FF90"}} type={props.type} onChange={props.onChange} value={props.value} name={props.name} placeholder={props.placeholder} className={`w-full resize-none h-32 bg-[#5356FF40] p-3 ${props.usingIcon && "pr-10"} outline-none rounded-md placeholder-[#f4f4f490] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}>test</textarea>
+          <motion.textarea whileFocus={{backgroundColor:"#5356FF90"}} type={props.type} onChange={props.onChange} value={props.value} name={props.name} placeholder={props.placeholder} className={`w-full resize-none h-32 bg-[#5356FF40] p-3 ${props.usingIcon && "pr-10"} outline-none rounded-md placeholder-[#f4f4f490] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}>test</motion.textarea>
           :
           <motion.input whileFocus={{backgroundColor:"#5356FF90"}} type={props.type} onChange={props.onChange} value={props.value} name={props.name} placeholder={props.placeholder} className={`w-full bg-[#5356FF40] p-3 ${props.usingIcon && "pr-10"} outline-none rounded-md placeholder-[#f4f4f490] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`} />
 

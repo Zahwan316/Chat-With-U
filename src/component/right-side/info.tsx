@@ -32,7 +32,8 @@ const InfoComponent = () => {
             </div>
             <div>
                 <h2 className='font-bold text-2xl mb-2'>{targetUser?.username}</h2>
-                <p>{targetUser?.email}</p>
+                <p className='text-lg'>{targetUser?.email}</p>
+                <p>{targetUser?.bio === null ? "User ini belum membuat bio" : targetUser?.bio}</p>
             </div>
 
         </div>

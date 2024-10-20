@@ -85,7 +85,7 @@ const LoginComponent = () => {
               onChange={handleForm}
               placeholder="Email"
               type="text"
-              width="56px"
+              width="100%"
               error={Object.entries(error).length != 0 && error?.email}
               usingIcon={false}
           />
@@ -94,7 +94,7 @@ const LoginComponent = () => {
               onChange={handleForm}
               placeholder="Password"
               type="password"
-              width="56px"
+              width="100%"
               error={Object.entries(error).length != 0 && error?.password}
               usingIcon={false}
           />

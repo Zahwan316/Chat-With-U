@@ -57,7 +57,7 @@ const MainChat = () => {
       getData()
       
     }
-  },[userInfo])
+  },[userInfo,token])
 
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import useComponentStore from "../../../state/component"
 import useFormStore from "../../../state/form"
 import useUserStore from "../../../state/user"
@@ -7,72 +7,90 @@ import ButtonComponent from "../../button/button"
 import Icons from "../../icons"
 import InputComponent from "../../input/input"
 import { motion } from 'framer-motion';
-
+import ErrorNotification from "../../../function/errorSwal"
+import axios from "axios"
+import Cookies from 'js-cookie';
+import ConsoleDebug from "../../../function/debugConsole"
+import MouseEventHandler from 'react';
+import {v4 as uuidv4} from "uuid"
+import ShowNotification from "../../../function/notification"
 
 const ProfileMainComponent = () => {
   const setProfileMenuActive = useComponentStore((state) => state.setProfileMenuActive)
   const form = useFormStore((state) => state.form)
   const setform = useFormStore((state) => state.setform)
   const userinfo = useUserStore((state) => state.userinfo)
+  const setuserinfo = useUserStore((state) => state.setuserinfo)
+  const token = Cookies.get("token")
+  const [updater,setupdater] = useState<string>("")
+
+  const handleForm = (e:ChangeEvent<HTMLInputElement>) => {
+    const {name,value} = e.target
+    setform(name,value)
+  }
+
+  useEffect(() => {
+    console.log(form)
+  })
 
   const PropertyInput: Array<InputProperty> = [
     {
         label:'Fullname',
         name:"fullname",
-        onChange:() => {},
+        onChange:handleForm,
         placeholder:"",
         type:"text",
         usingIcon:false,
         error:"",
-        onClick:() => {},
+        //onClick:() => {},
         width:"100%",
         value:form.fullname
     },
     {
         label:'Username',
         name:"username",
-        onChange:() => {},
+        onChange:handleForm,
         placeholder:"",
         type:"text",
         usingIcon:false,
         error:"",
-        onClick:() => {},
+        //onClick:() => {},
         width:"100%",
         value:form.username
     },
     {
         label:'Email',
         name:"email",
-        onChange:() => {},
+        onChange:handleForm,
         placeholder:"",
         type:"email",
         usingIcon:false,
         error:"",
-        onClick:() => {},
+        //onClick:() => {},
         width:"100%",
         value:form.email
     },
     {
         label:'Nomor Telepon',
         name:"number_phone",
-        onChange:() => {},
+        onChange:handleForm,
         placeholder:"",
         type:"number",
         usingIcon:false,
         error:"",
-        onClick:() => {},
+        //onClick:() => {},
         width:"100%",
         value:form.number_phone
     },
     {
         label:'Bio',
         name:"bio",
-        onChange:() => {},
+        onChange:handleForm,
         placeholder:"",
         type:"textarea",
         usingIcon:false,
         error:"",
-        onClick:() => {},
+        //onClick:() => {},
         width:"100%",
         value:form.bio
     },
@@ -87,12 +105,56 @@ const ProfileMainComponent = () => {
     return result;
   }, []);
 
+  const handleSubmit = (e:ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const sendData = async() => {
+        try{
+            const res = await axios.put(`${import.meta.env.VITE_APP_URL}api/user/id/${userinfo.id}`,form,{
+                "headers":{
+                    "Authorization":`Bearer ${token}`
+                }
+            })
+            setupdater(uuidv4())
+            const message = res.data.message
+            ShowNotification("Berhasil",message)
+            ConsoleDebug(res)
+        }
+        catch(e: unknown){
+            ErrorNotification(e)
+        }
+    }
+    sendData()
+  }
+
+  useEffect(() => {
+    const getData = async() => {
+        try{
+            const res = await axios.get(`${import.meta.env.VITE_APP_URL}api/user/id/${userinfo.id}`,{
+                "headers":{
+                    "Authorization":`Bearer ${token}`
+                }
+            })
+            const data = res.data.data
+            setuserinfo(data)
+
+        }
+        catch(e){
+            ErrorNotification(e)
+        }
+    }
+
+    getData()
+  },[updater])
+
   useEffect(() => {
     for(const key in userinfo){
         if(key === "password"){
             continue
         }
-        console.log(key)
+        else if(key === "id"){
+            continue
+        }
+
         setform(key,userinfo[key])
     }
 
@@ -137,7 +199,7 @@ const ProfileMainComponent = () => {
                     )
                 }
                 <div className='mt-16'>
-                    <ButtonComponent body="Simpan perubahan" onClick={() => {}} width=""  />
+                    <ButtonComponent body="Simpan perubahan" onClick={handleSubmit} width=""  />
                 </div>
             </div>
         </div>
