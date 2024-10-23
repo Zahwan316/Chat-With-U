@@ -1,5 +1,5 @@
-import useComponentStore from "../../../state/component"
-import Icons from "../../icons"
+import useComponentStore from "../../../../state/component"
+import Icons from "../../../../component/icons"
 
 const AddNewChatButton = () => {
   const handleNewChatActive = useComponentStore((state) => state.setNewChatMenuActive)

@@ -5,6 +5,7 @@ type state = {
     hoverMenuActive: boolean,
     newChatMenuActive: boolean,
     profileMenuActive: boolean,
+    statusMenuActive: boolean,
 }
 
 type action = {
@@ -12,6 +13,7 @@ type action = {
     setHoverMenuActive: () => void
     setNewChatMenuActive: () => void,
     setProfileMenuActive:() => void,
+    setStatusMenuActive: () => void,
 }
 
 const useComponentStore = create<state & action>((set) => ({
@@ -19,11 +21,13 @@ const useComponentStore = create<state & action>((set) => ({
     hoverMenuActive: false,
     newChatMenuActive: false,
     profileMenuActive: false,
+    statusMenuActive: false,
 
     setInfoMenuActive:() => set((state) => ({infoMenuActive:!state.infoMenuActive})),
     setHoverMenuActive:() => set((state) => ({hoverMenuActive:!state.hoverMenuActive})),
     setNewChatMenuActive:() => set((state) => ({newChatMenuActive:!state.newChatMenuActive})),
-    setProfileMenuActive:() => set((state) => ({profileMenuActive:!state.profileMenuActive}))
+    setProfileMenuActive:() => set((state) => ({profileMenuActive:!state.profileMenuActive})),
+    setStatusMenuActive:() => set((state) => ({statusMenuActive:!state.statusMenuActive}))
 }))
 
 export default useComponentStore

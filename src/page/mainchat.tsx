@@ -1,5 +1,5 @@
 import { memo } from "react"
-import MainChat from "../section/main"
+import MainChat from "../section/main/view"
 import {Helmet} from "react-helmet"
 
 const MainPageChat = memo(() => {

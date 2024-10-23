@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react"
-import useChatStore from "../../state/chat"
+import useChatStore from "../../../state/chat"
 import BubbleChatComponent from "./component/bubblechat"
 import { io } from "socket.io-client"
-import useUserStore from "../../state/user"
+import useUserStore from "../../../state/user"
 import axios from "axios"
 import Cookies from 'js-cookie';
-import dataChat from '../../data/chat';
-import chat from "../../types/chat"
-import getChat from "../../services/getChat"
-import ConsoleDebug from "../../function/debugConsole"
+import dataChat from '../../../data/chat';
+import chat from "../../../types/chat"
+import getChat from "../../../services/getChat"
+import ConsoleDebug from "../../../function/debugConsole"
 
 
 const socketio = io("http://localhost:3000")

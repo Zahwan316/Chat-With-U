@@ -1,8 +1,8 @@
-import useChatStore from "../../state/chat";
-import useComponentStore from "../../state/component"
-import useUserStore from "../../state/user";
-import Icons from "../icons"
-import MediaComponent from "./component/media"
+import useChatStore from "../../../state/chat";
+import useComponentStore from "../../../state/component"
+import useUserStore from "../../../state/user";
+import Icons from "../../../component/icons"
+import MediaComponent from "./media"
 import { motion } from 'framer-motion';
 
 

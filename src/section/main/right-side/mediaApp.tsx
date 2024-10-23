@@ -1,7 +1,7 @@
 import {  useState } from "react"
 import useComponentStore from "../../../state/component"
 import { AnimatePresence, motion} from "framer-motion"
-import FloatingWindowComponent from "../../floating-window/floating"
+import FloatingWindowComponent from "../../../component/floating-window/floating"
 
 type menuDesc = {
     id: number,

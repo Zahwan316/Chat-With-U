@@ -1,29 +1,17 @@
 import { AnimatePresence } from "framer-motion"
-import MainLayout from "../../component/mainLayout"
-import MediaMenuMainComponent from "../../component/right-side/component/mediaApp"
-import useComponentStore from "../../state/component"
+import MainLayout from "../../../component/mainLayout"
+import MediaMenuMainComponent from "../right-side/mediaApp"
+import useComponentStore from "../../../state/component"
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
-import useUserStore from "../../state/user";
+import useUserStore from "../../../state/user";
 import axios from "axios";
-import useChatStore from "../../state/chat";
-import { FourSquare } from "react-loading-indicators";
-import LoadingComponent from "../../component/loading/loading";
-import NewChatComponent from "../../component/floating-window/newchat";
-import getChat from "../../services/getChat";
+import useChatStore from "../../../state/chat";
+import LoadingComponent from "../../../component/loading/loading";
+import NewChatComponent from "../../../component/floating-window/newchat";
+import getChat from "../../../services/getChat";
 
-type expectedResponseChat = {
-  id: string,
-  type: "text" | "file",
-  body: string,
-  time: string,
-  user_target_id?: string,
-  user_from_id: string,
-  created_Date: string,
-  sentBy: "me" | "other",
-  file?:string
-}
 
 const MainChat = () => {
   const hoverMenuActive = useComponentStore((state) => state.hoverMenuActive)

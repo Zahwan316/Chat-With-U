@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
-import useChatStore from "../../state/chat"
-import useUserStore from "../../state/user"
+import useChatStore from "../../../state/chat"
+import useUserStore from "../../../state/user"
 import ContactItemComponent from "./component/contactitem";
 import AddContactButton from "./component/addNewChat";
-import contactData from "../../types/contactData";
+import contactData from "../../../types/contactData";
+import ConsoleDebug from "../../../function/debugConsole";
 
 const ContactComponent = () => {
   const chat = useChatStore((state) => state.chat)

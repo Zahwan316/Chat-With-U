@@ -1,8 +1,8 @@
 import { AnimatePresence } from "framer-motion"
 import useComponentStore from "../state/component"
-import MainLeftSideComponent from "./left-side"
-import MiddleSideComponent from "./middle-side"
-import RightSideComponent from "./right-side"
+import MainLeftSideComponent from "../section/main/left-side"
+import MiddleSideComponent from "../section/main/middle-side"
+import RightSideComponent from "../section/main/right-side"
 
 
 const MainLayout = () => {

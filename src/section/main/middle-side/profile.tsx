@@ -1,6 +1,6 @@
-import useChatStore from "../../state/chat"
-import useComponentStore from "../../state/component"
-import useUserStore from "../../state/user"
+import useChatStore from "../../../state/chat"
+import useComponentStore from "../../../state/component"
+import useUserStore from "../../../state/user"
 
 const ProfileChatComponent = () => {
   const setInfoMenuActive = useComponentStore((state) => state.setInfoMenuActive)

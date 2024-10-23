@@ -1,4 +1,4 @@
-import useUserStore from "../../state/user"
+import useUserStore from "../../../state/user"
 import MenuProfileComponent from "./component/menu"
 
 const ProfileLeftSideComponent = () => {

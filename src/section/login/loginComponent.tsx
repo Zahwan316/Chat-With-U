@@ -1,13 +1,13 @@
 import { ChangeEvent, useEffect, useState } from "react"
-import useFormStore from "../state/form"
-import InputComponent from "./input/input"
-import ButtonComponent from "./button/button"
+import useFormStore from "../../state/form"
+import InputComponent from "../../component/input/input"
+import ButtonComponent from "../../component/button/button"
 import axios from "axios"
 import Swal from "sweetalert2"
 import Cookies from "js-cookie"
 import { useNavigate } from "react-router-dom"
-import BoxLoginRegister from "./box/boxLoginRegister"
-import ErrorNotification from "../function/errorSwal"
+import BoxLoginRegister from "../../component/box/boxLoginRegister"
+import ErrorNotification from "../../function/errorSwal"
 
 type errorState = {
   email: string,

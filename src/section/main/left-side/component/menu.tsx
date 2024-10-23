@@ -1,6 +1,6 @@
-import ChatMenuComponent from "./menu item/chatMenu"
-import SettingsMenuComponent from "./menu item/SettingsMenu"
-import StatusMenuComponent from "./menu item/StatusMenu"
+import ChatMenuComponent from "./menuitem/chatMenu"
+import SettingsMenuComponent from "./menuitem/SettingsMenu"
+import StatusMenuComponent from "./menuitem/StatusMenu"
 
 const MenuProfileComponent = () => {
 

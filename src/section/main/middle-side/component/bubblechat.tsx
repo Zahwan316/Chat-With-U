@@ -1,7 +1,7 @@
 import { memo, useEffect, useRef, useState } from "react"
 import { motion } from 'framer-motion';
-import useUserStore from "../../../state/user";
-import chat from "../../../types/chat";
+import useUserStore from "../../../../state/user";
+import chat from "../../../../types/chat";
 
 const BubbleChatComponent = memo((props: chat) => {
   const [readmore,setreadmore] = useState<boolean>(false)

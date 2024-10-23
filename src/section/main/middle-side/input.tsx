@@ -1,11 +1,11 @@
 import { ChangeEvent,  useEffect, useRef } from "react"
-import useFormStore from "../../state/form"
-import Icons from "../icons"
-import useChatStore from "../../state/chat"
+import useFormStore from "../../../state/form"
+import Icons from "../../../component/icons"
+import useChatStore from "../../../state/chat"
 import io from "socket.io-client"
-import useUserStore from "../../state/user"
+import useUserStore from "../../../state/user"
 import {v4 as uuidv4} from "uuid"
-import chat from "../../types/chat"
+import chat from "../../../types/chat"
 import Cookies from 'js-cookie';
 
 const socket = io("http://localhost:3000")

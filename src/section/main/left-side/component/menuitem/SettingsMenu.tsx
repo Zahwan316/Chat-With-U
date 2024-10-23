@@ -1,10 +1,10 @@
 import React, { useState, MouseEventHandler,  useEffect } from 'react';
-import Icons from "../../../icons"
+import Icons from "../../../../../component/icons"
 import {AnimatePresence, motion} from "framer-motion"
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
-import useChatStore from '../../../../state/chat';
-import useComponentStore from '../../../../state/component';
+import useChatStore from '../../../../../state/chat';
+import useComponentStore from '../../../../../state/component';
 
 
 type menulist = {
