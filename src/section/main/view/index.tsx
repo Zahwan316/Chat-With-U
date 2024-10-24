@@ -11,18 +11,25 @@ import useChatStore from "../../../state/chat";
 import LoadingComponent from "../../../component/loading/loading";
 import NewChatComponent from "../../../component/floating-window/newchat";
 import getChat from "../../../services/getChat";
+import StatusFloatingComponent from "../../../component/floating-window/status";
 
 
 const MainChat = () => {
-  const hoverMenuActive = useComponentStore((state) => state.hoverMenuActive)
+  //chat state
   const addChat = useChatStore((state) => state.addChat)
   const chat = useChatStore((state) => state.chat)
+
+  //user state
   const userInfo = useUserStore((state) => state.userinfo)
   const setuserinfo = useUserStore((state) => state.setuserinfo)
   const setAllUser = useUserStore((state) => state.setalluser)
   const allUser = useUserStore((state) => state.alluser)
+
+  //component state
   const [loading,setloading] = useState<boolean>(false)
+  const hoverMenuActive = useComponentStore((state) => state.hoverMenuActive)
   const newChatMenuActive = useComponentStore((state) => state.newChatMenuActive)
+  const statusModalActive = useComponentStore((state) => state.statusModalActive)
 
   const navigate = useNavigate()
  
@@ -47,7 +54,7 @@ const MainChat = () => {
     }
   },[userInfo,token])
 
-
+  //get current user data
   useEffect(() => {
     if(token){
       const getData = async() => {
@@ -110,13 +117,20 @@ const MainChat = () => {
           hoverMenuActive &&
             <MediaMenuMainComponent />
         }
+
         {
           loading && 
             <LoadingComponent />
         }
+
         {
           newChatMenuActive &&
             <NewChatComponent />
+        }
+
+        {
+          statusModalActive &&
+            <StatusFloatingComponent />
         }
         </AnimatePresence>
     </div>

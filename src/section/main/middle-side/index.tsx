@@ -54,9 +54,27 @@ const MiddleSideComponent = () => {
           }[currmenu]
         }
       </AnimatePresence>
-      {
+      
+     {/*  <AnimatePresence>
+        {
+          sessionChat === "" && <WelcomeChat />
+        }
+
+        {
+          profileMenuActive && <ProfileMainComponent />
+          
+        }
+
+        {
+          sessionChat != "" && mainChatComponent
+        }
+
+        {
+          statusMenuActive && <StatusComponent />
+        }
+      </AnimatePresence> */}
         
-       /*  sessionChat === "" ?
+      {/*  /*  sessionChat === "" ?
         <WelcomeChat />
         :
         (
@@ -70,8 +88,8 @@ const MiddleSideComponent = () => {
               mainChatComponent
             }
           </AnimatePresence>
-        ) */
-      }       
+        ) */ }
+            
     </div>
   )
 }

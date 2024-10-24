@@ -18,7 +18,7 @@ const ContactComponent = () => {
     const chatDateSort = chat.sort((a,b) => {
       const dateA = new Date(a.created_Date || "").getTime()
       const dateB = new Date(b.created_Date || "").getTime()
-      return dateA - dateB
+      return dateB - dateA
     })
 
      const uniqueChat = chatDateSort.filter((item, index, self) => 

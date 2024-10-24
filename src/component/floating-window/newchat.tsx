@@ -65,26 +65,26 @@ const NewChatComponent = () => {
 
   return(
     <FloatingWindowComponent
-        title="Tambah Chat"
-        onClick={setNewChatMenuActive}
-        size="xl"
+      title="Tambah Chat"
+      onClick={setNewChatMenuActive}
+      size="xl"
     >
         <div>
             <div>
                 {
-                    searcheduser.length === 0 && searched === true?
-                    <div className='p-4'>
-                        <motion.p initial={{opacity:0}} animate={{opacity:1}} className="font-bold">{description}</motion.p>
-                    </div>
-                    :
-                    searcheduser.map((item) => 
-                        <ListUser
-                            id={item.id}
-                            img={item.image}
-                            username={item.username}
-                            onClick={handleClickUser}
-                        />
-                    )
+                  searcheduser.length === 0 && searched === true?
+                  <div className='p-4'>
+                      <motion.p initial={{opacity:0}} animate={{opacity:1}} className="font-bold">{description}</motion.p>
+                  </div>
+                  :
+                  searcheduser.map((item) => 
+                      <ListUser
+                          id={item.id}
+                          img={item.image}
+                          username={item.username}
+                          onClick={handleClickUser}
+                      />
+                  )
                     
 
                 }
