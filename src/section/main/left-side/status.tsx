@@ -1,8 +1,13 @@
+import useComponentStore from "../../../state/component";
+import AddNewChatButton from "./component/addNewChat";
 import StatusItemComponent from "./component/statusItem"
 import { AnimatePresence, motion } from 'framer-motion';
 
 const StatusMenuComponent = () => {
+  //component state
+  const setAddStatusModalActive = useComponentStore((state) => state.setAddStatusModalActive)
     
+  //return title element
   const title = (title: string) => {
     return(
         <div className='p-2 my-2'>
@@ -44,6 +49,9 @@ const StatusMenuComponent = () => {
                     username="Lorem"
                 />
             </div>
+            <AddNewChatButton 
+                set={setAddStatusModalActive}
+            />
         </motion.div>
     </AnimatePresence>
   )

@@ -5,22 +5,31 @@ import ContactItemComponent from "./component/contactitem";
 import AddContactButton from "./component/addNewChat";
 import contactData from "../../../types/contactData";
 import ConsoleDebug from "../../../function/debugConsole";
+import useComponentStore from "../../../state/component";
 
 const ContactComponent = () => {
-  const chat = useChatStore((state) => state.chat)
+  //user state
   const userinfo = useUserStore((state) => state.userinfo)
+  const allUser = useUserStore((state) => state.alluser)
+
+  //chat state
+  const chat = useChatStore((state) => state.chat)
   const setSessionChat = useChatStore((state) => state.setSessionChat)
   const SessionChat = useChatStore((state) => state.sessionChat)
-  const allUser = useUserStore((state) => state.alluser)
   const [filteredChat,setfilteredChat] = useState<Array<contactData>>([])
+
+  //component state
+  const setNewChatActive = useComponentStore((state) => state.setNewChatMenuActive)
   
   useEffect(() => {
+    //sort date from older chat
     const chatDateSort = chat.sort((a,b) => {
       const dateA = new Date(a.created_Date || "").getTime()
       const dateB = new Date(b.created_Date || "").getTime()
       return dateB - dateA
     })
 
+    //find chat and set chat only 1 newest per user who chat this user
      const uniqueChat = chatDateSort.filter((item, index, self) => 
       index === self.findIndex((t) => (
         (t.user_from_id === item.user_from_id && t.user_target_id === item.user_target_id) ||
@@ -37,6 +46,7 @@ const ContactComponent = () => {
     setfilteredChat(uniqueChat)
   },[chat])
 
+  //handle session chat when user click the chat user box 
   const handleSessionChat = (e:React.MouseEvent<HTMLElement>) => {
     const target = e.target as HTMLElement
     const id = target.attributes.getNamedItem("data-id")?.value 
@@ -100,7 +110,9 @@ const ContactComponent = () => {
               )
             )
         }
-        <AddContactButton />
+        <AddContactButton
+          set={setNewChatActive}
+        />
     </div>
   )
 }

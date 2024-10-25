@@ -12,6 +12,7 @@ import LoadingComponent from "../../../component/loading/loading";
 import NewChatComponent from "../../../component/floating-window/newchat";
 import getChat from "../../../services/getChat";
 import StatusFloatingComponent from "../../../component/floating-window/status";
+import AddStatusFloatingWindowComponent from "../../../component/floating-window/addStatus";
 
 
 const MainChat = () => {
@@ -30,6 +31,7 @@ const MainChat = () => {
   const hoverMenuActive = useComponentStore((state) => state.hoverMenuActive)
   const newChatMenuActive = useComponentStore((state) => state.newChatMenuActive)
   const statusModalActive = useComponentStore((state) => state.statusModalActive)
+  const addStatusModalActive = useComponentStore((state) => state.addStatusModalActive)
 
   const navigate = useNavigate()
  
@@ -131,6 +133,11 @@ const MainChat = () => {
         {
           statusModalActive &&
             <StatusFloatingComponent />
+        }
+
+        {
+          addStatusModalActive &&
+           <AddStatusFloatingWindowComponent />
         }
         </AnimatePresence>
     </div>
