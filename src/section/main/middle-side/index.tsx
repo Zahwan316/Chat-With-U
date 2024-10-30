@@ -39,7 +39,7 @@ const MiddleSideComponent = () => {
 
 
   useEffect(() => {
-    console.log(currmenu,profileMenuActive)
+    
   })
 
   return(

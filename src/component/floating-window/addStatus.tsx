@@ -1,15 +1,26 @@
-import { useState } from "react"
+import { ChangeEvent, MouseEvent, useState } from "react"
 import useComponentStore from "../../state/component"
 import Icons from "../icons"
 import FloatingWindowComponent from "./floating"
-import RichTextEditor from "../editor/QuillEditor"
 import ButtonComponent from "../button/button"
 import useFormStore from "../../state/form"
+import InputComponent from "../input/input"
+import useUserStore from "../../state/user"
+import ErrorNotification from "../../function/errorSwal"
+import Cookies from 'js-cookie';
+import ShowNotification from "../../function/notification"
+import { io } from "socket.io-client"
 
 const tipeStatus: string[] = ['Gambar','Text']
 
+const socket = io("http://localhost:3000")
 const AddStatusFloatingWindowComponent = () => {
   const [currStatusMenu,setCurrStatusMenu] = useState<string>("gambar") 
+  const date = new Date()
+  const token = Cookies.get("token")
+
+  //user state
+  const userInfo = useUserStore((state) => state.userinfo)
   
   //form state
   const setform = useFormStore((state) => state.setform)
@@ -29,12 +40,35 @@ const AddStatusFloatingWindowComponent = () => {
 
   //handle form
   const handleForm = (e: React.ChangeEvent<HTMLInputElement>) => {
-    
+    const {name,value} = e.target
+    setform(name,value)
+  }
+
+  const statusJsonStructure = {
+    user_id:userInfo.id,
+    img_id: null,
+    text:form?.text,
+    time:`${date.getHours()}:${date.getMinutes().toString().length == 1 ? "0" : ""}${date.getMinutes()}`,
+    created_date:date.toISOString(),
+    type:currStatusMenu === "gambar" ? "img" : "text",
+    token:token
   }
 
   //send form
-  const handleSendStatus = () => {
+  const handleSendStatus = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
 
+    const send = async() => {
+        try{
+            socket.emit("status",statusJsonStructure)
+            ShowNotification("Berhasil","Status berhasil ditambahkan")
+        }
+        catch(e){
+            ErrorNotification(e)
+        }
+    }
+
+    send()
   }
 
   return(
@@ -65,13 +99,20 @@ const AddStatusFloatingWindowComponent = () => {
                     <p>Upload Gambar Disini</p>
                 </div>
             }
-
             {
                 currStatusMenu === "text" &&
                 <div className="">
-                    <RichTextEditor
-                        value='lorem'
+                    <InputComponent
+                        name="text"
                         onChange={handleForm}
+                        placeholder=""
+                        type="text"
+                        usingIcon={false}
+                        value={form.text}
+                        error={""}
+                        key={""}
+                        label="Ketik disini"
+                        
                     />
                 </div>
             }

@@ -80,7 +80,7 @@ const MainChat = () => {
 
           const data = res.data.data
           setuserinfo(data)
-          console.log(userInfo)
+          
         }
         catch(e){
           if(import.meta.env.VITE_APP_STAGE === "BUILD"){

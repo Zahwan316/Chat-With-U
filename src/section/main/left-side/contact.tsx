@@ -4,8 +4,8 @@ import useUserStore from "../../../state/user"
 import ContactItemComponent from "./component/contactitem";
 import AddContactButton from "./component/addNewChat";
 import contactData from "../../../types/contactData";
-import ConsoleDebug from "../../../function/debugConsole";
 import useComponentStore from "../../../state/component";
+import { motion } from 'framer-motion';
 
 const ContactComponent = () => {
   //user state
@@ -15,7 +15,7 @@ const ContactComponent = () => {
   //chat state
   const chat = useChatStore((state) => state.chat)
   const setSessionChat = useChatStore((state) => state.setSessionChat)
-  const SessionChat = useChatStore((state) => state.sessionChat)
+ 
   const [filteredChat,setfilteredChat] = useState<Array<contactData>>([])
 
   //component state
@@ -26,7 +26,7 @@ const ContactComponent = () => {
     const chatDateSort = chat.sort((a,b) => {
       const dateA = new Date(a.created_Date || "").getTime()
       const dateB = new Date(b.created_Date || "").getTime()
-      return dateB - dateA
+      return dateA - dateB
     })
 
     //find chat and set chat only 1 newest per user who chat this user
@@ -41,7 +41,7 @@ const ContactComponent = () => {
       (item) => item.user_from_id !== userinfo.id || item.user_target_id === userinfo.id
     ); */
 
-    console.log("unique chat :",uniqueChat)
+   
 
     setfilteredChat(uniqueChat)
   },[chat])
@@ -56,11 +56,11 @@ const ContactComponent = () => {
   }
 
   useEffect(() => {
-    console.log(filteredChat,SessionChat)
+   
   })
 
   return(
-    <div className='w-full h-[83vh] relative'>
+    <motion.div initial={{top:"30px",opacity:0}} animate={{top:"0px",opacity:1}} exit={{top:"30px",opacity:0}} className='w-full h-[83vh] relative'>
         {
             filteredChat.map((item: contactData) => 
               allUser.map((items) => {
@@ -113,7 +113,7 @@ const ContactComponent = () => {
         <AddContactButton
           set={setNewChatActive}
         />
-    </div>
+    </motion.div>
   )
 }
 

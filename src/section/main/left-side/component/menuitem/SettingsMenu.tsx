@@ -15,8 +15,6 @@ type menulist = {
 
 const SettingsMenuComponent = () => {
   const [active,setActive] = useState<boolean>(false)  
-  const navigate = useNavigate()
-  const removeAllChat = useChatStore((state) => state.removeAllChat)
   const setProfileMenuActive = useComponentStore((state) => state.setProfileMenuActive)
 
   const handleLogout = () => {

@@ -15,6 +15,7 @@ type action = {
 const useChatStore = create<state & action>((set) => ({
     chat:[],
     sessionChat:"",
+    
     addChat:(chatvalue) => set((state) => ({chat:[...state.chat,chatvalue]})),
     setSessionChat:(data: string) => set(() => ({sessionChat:data})),
     removeAllChat:() => set(() => ({chat:[]})),

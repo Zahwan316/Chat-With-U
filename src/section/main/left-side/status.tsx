@@ -1,9 +1,30 @@
+import { useEffect } from "react";
 import useComponentStore from "../../../state/component";
 import AddNewChatButton from "./component/addNewChat";
 import StatusItemComponent from "./component/statusItem"
 import { AnimatePresence, motion } from 'framer-motion';
+import ErrorNotification from "../../../function/errorSwal";
+import axios from "axios";
+import Cookies from 'js-cookie';
+import useStatusStore from "../../../state/status";
+import status from "../../../types/status";
+import { io } from "socket.io-client";
+import useUserStore from "../../../state/user";
 
+const socketio = io(import.meta.env.VITE_APP_URL)
 const StatusMenuComponent = () => {
+  const token = Cookies.get("token")
+
+  //users store
+  const allUser = useUserStore((state) => state.alluser)
+  const userInfo = useUserStore((state) => state.userinfo)
+
+  //status state
+  const setStatus = useStatusStore((state) => state.setstatus)
+  const addStatus = useStatusStore((state) => state.addstatus)
+  const status = useStatusStore((state) => state.status)
+  //const [filteredStatus,setFilteredStatus] = useState<Array<status>>([])
+
   //component state
   const setAddStatusModalActive = useComponentStore((state) => state.setAddStatusModalActive)
     
@@ -16,38 +37,89 @@ const StatusMenuComponent = () => {
     )
   }
 
+   //filter status
+   const sortStatusWithDate = status.sort((a,b) => {
+    const dateA = new Date(a.created_date || "").getTime()
+    const dateB = new Date(b.created_date || "").getTime()
+    return dateB - dateA
+  })
+
+  //find chat and set chat only 1 newest per user who chat this user
+  const uniqueStatus = sortStatusWithDate.reduce((acc: Array<status>, current) => {
+    // Cek apakah user_id sudah ada di accumulator
+    if (!acc.find(item => item.user_id === current.user_id ) && current.user_id !== userInfo?.id) {
+        acc.push(current); // Tambahkan status jika belum ada user_id yang sama
+    } 
+    return acc;
+  }, []);
+
+  //check if curr user has uploaded status
+  const currUserStatus = ():string => {
+    const hasStatus = status.filter((item) => item.user_id === userInfo.id)
+    if(hasStatus.length === 0) return "Belum ada status"
+    return hasStatus[0]?.time
+  }
+
+  //get status data
+  useEffect(() => {
+    socketio.on("status",(status) => {
+      setStatus(status)
+      console.log(status)
+    })
+
+    const getdata = async() => {
+        try{
+            const res = await axios.get(`${import.meta.env.VITE_APP_URL}api/status`,{
+                "headers":{
+                  "Authorization":`Bearer ${token}`
+                }
+              })
+            const data = res.data.data
+            //ConsoleDebug(data)
+            addStatus(data)
+        }
+        catch(e){
+            ErrorNotification(e)
+        }
+    } 
+
+    if(Object.keys(status).length === 0) getdata() 
+
+  },[])
+
+  useEffect(() => {
+   
+  })
+
   return(
     <AnimatePresence>
-        <motion.div className="relative" initial={{top:"30px",opacity:0}} animate={{top:"0px",opacity:1}} exit={{top:"30px",opacity:0}} transition={{duration:.1,ease:"easeOut"}}>
+        <motion.div className="relative h-[82vh]" initial={{top:"30px",opacity:0}} animate={{top:"0px",opacity:1}} exit={{top:"30px",opacity:0}} transition={{duration:.1,ease:"easeOut"}}>
         {title("Status Saya")}
             <div>
                 <StatusItemComponent 
-                    id="123"
+                    id={userInfo.id}
                     img="./img/profile.png"
-                    time="09:30"
+                    time={currUserStatus()}
                     username="Status Saya"
+
                 />
             </div>
             {title("Update Terbaru")}
-            <div>
-                <StatusItemComponent 
-                    id="123"
-                    img="./img/profile.png"
-                    time="09:30"
-                    username="Lorem"
-                />
-                <StatusItemComponent 
-                    id="123"
-                    img="./img/profile.png"
-                    time="09:30"
-                    username="Lorem"
-                />
-                <StatusItemComponent 
-                    id="123"
-                    img="./img/profile.png"
-                    time="09:30"
-                    username="Lorem"
-                />
+            <div className="">
+                {
+                  uniqueStatus.map((item) => 
+                    allUser.map((items) => 
+                      items.id === item.user_id &&
+                        <StatusItemComponent 
+                            key={item.user_id}
+                            id={item.user_id}
+                            img="./img/profile.png"
+                            time={item.time}
+                            username={items.username}
+                        />
+                    )
+                  )
+                }
             </div>
             <AddNewChatButton 
                 set={setAddStatusModalActive}

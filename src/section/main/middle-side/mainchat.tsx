@@ -3,22 +3,18 @@ import useChatStore from "../../../state/chat"
 import BubbleChatComponent from "./component/bubblechat"
 import { io } from "socket.io-client"
 import useUserStore from "../../../state/user"
-import axios from "axios"
-import Cookies from 'js-cookie';
-import dataChat from '../../../data/chat';
 import chat from "../../../types/chat"
-import getChat from "../../../services/getChat"
-import ConsoleDebug from "../../../function/debugConsole"
 
 
-const socketio = io("http://localhost:3000")
+
+const socketio = io(import.meta.env.VITE_APP_URL)
 const MainChatComponent = () => {
   const chatdata = useChatStore((state) => state.chat)
   const addchat = useChatStore((state) => state.addChat)
   const SessionChat = useChatStore((state) => state.sessionChat)
   const userinfo = useUserStore((state) => state.userinfo)
   const [chatfilter,setchatfilter] = useState<Array<chat>>()
-  const token = Cookies.get("token")
+
 
 
   useEffect(() =>{

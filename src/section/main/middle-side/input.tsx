@@ -14,7 +14,6 @@ const InputComponent = () => {
   const setform = useFormStore((state) => state.setform)
   const resetform = useFormStore((state) => state.resetform)
   const date = new Date()
-  const chat = useChatStore((state) => state.chat)
   const inputref = useRef<HTMLInputElement>(null)
   const userinfo = useUserStore((state) => state.userinfo)
   const sessionChat = useChatStore((state) => state.sessionChat)
@@ -59,7 +58,7 @@ const InputComponent = () => {
   }
 
   useEffect(() => {
-    console.log(chat) 
+    
   })
 
   return(

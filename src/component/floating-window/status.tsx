@@ -1,15 +1,41 @@
-import { useEffect, useState } from "react"
+import { MouseEvent, useEffect, useState } from "react"
 import statusDummyData from "../../data/status"
 import InputComponent from "../../section/main/middle-side/input"
 import useComponentStore from "../../state/component"
 import Icons from "../icons"
 import FloatingWindowComponent from "./floating"
+import useChatStore from "../../state/chat"
+import status from "../../types/status"
+import useStatusStore from "../../state/status"
+import useUserStore from "../../state/user"
+import ButtonComponent from "../button/button"
+import ErrorNotification from "../../function/errorSwal"
+import axios from "axios"
+import Cookies from 'js-cookie';
+import Swal from "sweetalert2"
+import ShowNotification from "../../function/notification"
 
 const StatusFloatingComponent = () => {
-  const setStatusModalActive = useComponentStore((state) => state.setStatusModalActive)
-  const statusdummydata = statusDummyData
-  const [currindex,setcurrindex] = useState<number>(0)
+  const token = Cookies.get("token")
 
+  //user state
+  const userinfo = useUserStore((state) => state.userinfo)
+  const allUser = useUserStore((state) => state.alluser)
+  
+  //component state
+  const setStatusModalActive = useComponentStore((state) => state.setStatusModalActive)
+
+  //status state
+  const status = useStatusStore((state) => state.status)
+
+  //local state
+  const [currindex,setcurrindex] = useState<number>(0)
+  const [statusData,setStatusData] = useState<Array<status>>([])
+
+  //chat state
+  const sessionChat = useChatStore((state) => state.sessionChat)
+
+  //handle Index Page
   const handleCurrIndex = (e: React.MouseEvent<HTMLDivElement>) => {
      const target = e.currentTarget as HTMLElement
      const handle = target.attributes.getNamedItem('data-method')?.value
@@ -17,31 +43,78 @@ const StatusFloatingComponent = () => {
      if(handle == 'next') setcurrindex((prev) => (prev + 1))
   }
 
+  //handle slider button
   const handleClickSlider = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement
     const value = target.attributes.getNamedItem('data-index')?.value
     setcurrindex(parseInt(value))
   }
 
+  //check curr status username
+  const currUsername = statusData.length != 0 && allUser.find((item) => item.id === statusData[0].user_id)?.username
+
+  //delete status
+  const handleDeleteStatus = async(e: MouseEvent<HTMLButtonElement>) => {
+    try{
+      Swal.fire({
+        text:"Apakah anda ingin menghapus status ini?",
+        title:"Peringatan",
+        icon:"question",
+        showConfirmButton:true,
+        showCancelButton:true,
+        confirmButtonText:"Ya",
+
+      }).then(async(confirm) => {
+        if(confirm){
+          try{
+            const res = await axios.delete(`${import.meta.env.VITE_APP_URL}api/status/id/${statusData[currindex]?.id}`,{
+              "headers":{
+                "Authorization":`Bearer ${token}`
+              }
+            })
+            
+            ShowNotification("Berhasil","Status berhasil dihapus")
+          }
+          catch(e){
+            ErrorNotification(e)
+          }
+        }
+      })
+
+    }
+    catch(e){
+      ErrorNotification(e)
+    }
+  }
+
+  //find user with session chat
   useEffect(() => {
-    console.log(currindex)
+    const findStatus = status.filter((item) => 
+      item.user_id === sessionChat
+    )
+    setStatusData(findStatus)
+  },[sessionChat])
+
+  useEffect(() => {
+    
   })
 
   return(
     <FloatingWindowComponent
-        title="Status Saya"
+        title={currUsername as string}
         size="lg"
         titlePosition="left"
         onClick={setStatusModalActive}
     >
-        <div className="relative -top-4">
-            <p className="font-bold">{statusDummyData[currindex].time}</p>
+        <div className="relative -top-4 flex gap-8">
+            <p className="font-bold">{statusData[currindex]?.time}</p>
+            <ButtonComponent body="Delete" onClick={handleDeleteStatus} width="" />
         </div>
 
         {/* Slider */}
         <div className="w-full flex justify-center mb-4 gap-2">
             {
-              statusDummyData.map((item,index) => 
+              statusData.map((item,index) => 
                 <div className={`w-3 h-3  rounded-full cursor-pointer ${index == currindex ? "bg-cyan-400" : "bg-gray-300"}`} data-index={index} onClick={handleClickSlider}></div>
               )
             }
@@ -60,11 +133,20 @@ const StatusFloatingComponent = () => {
                 </div>
             }
 
-            <img src={statusDummyData[currindex].img} className='rounded-[8px]'/>
+            {
+              statusData[currindex]?.img_id != null || statusData[currindex]?.type === "img"?
+              <img src={statusData[currindex]?.img_id} className='rounded-[8px]'/>
+              :
+              <div className="w-[30vw] h-[30vh] bg-emerald-600 rounded-md flex justify-center items-center p-8">
+                <p className="font-bold">
+                  {statusData[currindex]?.text}
+                </p>
+              </div>
+            }
 
             {/* Right Arrow*/}
             {
-                currindex !== statusdummydata.length - 1 &&
+                currindex !== statusData.length - 1 &&
                 <div className='absolute bg-black bg-opacity-20 w-16 h-full flex justify-center items-center right-0 opacity-0 hover:opacity-100 transition-all'>
                     <div className="cursor-pointer" data-method="next" onClick={handleCurrIndex}>
                         <Icons.RightTriangleIcon fontsize="40" data-method='previous'/>
@@ -74,9 +156,12 @@ const StatusFloatingComponent = () => {
         </div>
 
         {/* input */}
-        <div>
-            <InputComponent />
-        </div>
+        {
+          sessionChat !== userinfo?.id &&
+          <div>
+              <InputComponent />
+          </div>
+        }
         
     </FloatingWindowComponent>
   )
