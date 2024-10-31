@@ -1,16 +1,19 @@
 import { create } from "zustand";
 import user from "../types/user";
+import onlineUser from '../types/onlineUser';
 
 type state = {
     userinfo: user,
     alluser: Array<user>,
-    searchedUser: Array<user>
+    searchedUser: Array<user>,
+    userOnline: Array<onlineUser>
 }
 
 type action = {
     setuserinfo:(data:user) => void,
     setalluser:(data:Array<user>) => void,
     setsearcheduser:(data:Array<user>) => void
+    setUserOnline:(data:Array<onlineUser>) => void
 }
 
 const useUserStore = create<state & action>((set) => ({
@@ -27,10 +30,12 @@ const useUserStore = create<state & action>((set) => ({
     },
     alluser:[],
     searchedUser:[],
+    userOnline:[],
 
     setuserinfo:(data:user) => set(() => ({userinfo:data})),
     setalluser:(data:Array<user>) => set(() => ({alluser:data})),
-    setsearcheduser:(data:Array<user>) => set(() => ({searchedUser:data}))
+    setsearcheduser:(data:Array<user>) => set(() => ({searchedUser:data})),
+    setUserOnline:(data:Array<onlineUser>) => set(() => ({userOnline:data})),
 }))
 
 export default useUserStore

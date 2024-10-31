@@ -62,7 +62,7 @@ const MainChatComponent = () => {
                     key={item.id}
                     id={item.id}
                     body={item.body}
-                    sentBy={item.sentBy}
+                    sent_by={item.sentBy}
                     time={item.time}
                     type={item.type}
                     file={item.file}

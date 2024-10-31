@@ -14,6 +14,10 @@ import axios from "axios"
 import Cookies from 'js-cookie';
 import Swal from "sweetalert2"
 import ShowNotification from "../../function/notification"
+import { io } from "socket.io-client"
+
+
+const socket = io("http://localhost:3000")
 
 const StatusFloatingComponent = () => {
   const token = Cookies.get("token")
@@ -55,6 +59,7 @@ const StatusFloatingComponent = () => {
 
   //delete status
   const handleDeleteStatus = async(e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
     try{
       Swal.fire({
         text:"Apakah anda ingin menghapus status ini?",
@@ -66,18 +71,7 @@ const StatusFloatingComponent = () => {
 
       }).then(async(confirm) => {
         if(confirm){
-          try{
-            const res = await axios.delete(`${import.meta.env.VITE_APP_URL}api/status/id/${statusData[currindex]?.id}`,{
-              "headers":{
-                "Authorization":`Bearer ${token}`
-              }
-            })
-            
-            ShowNotification("Berhasil","Status berhasil dihapus")
-          }
-          catch(e){
-            ErrorNotification(e)
-          }
+          socket.emit("deleteStatus",{id:statusData[currindex]?.id,token:Cookies.get("token")})
         }
       })
 
@@ -96,7 +90,7 @@ const StatusFloatingComponent = () => {
   },[sessionChat])
 
   useEffect(() => {
-    
+    console.log(statusData[currindex])
   })
 
   return(
@@ -108,7 +102,11 @@ const StatusFloatingComponent = () => {
     >
         <div className="relative -top-4 flex gap-8">
             <p className="font-bold">{statusData[currindex]?.time}</p>
-            <ButtonComponent body="Delete" onClick={handleDeleteStatus} width="" />
+            {
+              sessionChat === userinfo.id &&
+              <ButtonComponent body="Delete" onClick={handleDeleteStatus} width="" />
+
+            }
         </div>
 
         {/* Slider */}

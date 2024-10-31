@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import useChatStore from '../../../../../state/chat';
 import useComponentStore from '../../../../../state/component';
+import { io } from 'socket.io-client';
 
 
 type menulist = {
@@ -13,12 +14,16 @@ type menulist = {
     onClick: MouseEventHandler
 }
 
+const socket = io(import.meta.env.VITE_APP_URL)
 const SettingsMenuComponent = () => {
   const [active,setActive] = useState<boolean>(false)  
   const setProfileMenuActive = useComponentStore((state) => state.setProfileMenuActive)
 
   const handleLogout = () => {
     Cookies.remove("token")
+    socket.on("disconnect",() => {
+        
+    })
     //removeAllChat()
     setTimeout(() => {
         window.location.href = "/login"

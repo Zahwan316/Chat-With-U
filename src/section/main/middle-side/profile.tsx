@@ -6,6 +6,7 @@ const ProfileChatComponent = () => {
   const setInfoMenuActive = useComponentStore((state) => state.setInfoMenuActive)
   const sessionchat = useChatStore((state) => state.sessionChat)
   const allUser = useUserStore((state) => state.alluser)
+  const userOnline = useUserStore((state) => state.userOnline)
 
   const targetChatUser = allUser.find((item) => item.id === sessionchat)
 
@@ -20,6 +21,12 @@ const ProfileChatComponent = () => {
         </div>
         <div>
             <p className="font-bold text-xl">{targetChatUser?.username}</p>
+            {
+              userOnline.map((item) => 
+                item.userid === sessionchat &&
+                <p className='text-sm'>Online</p>
+              )
+            }
         </div>
      </div>
   )

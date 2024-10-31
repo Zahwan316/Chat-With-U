@@ -13,8 +13,9 @@ import NewChatComponent from "../../../component/floating-window/newchat";
 import getChat from "../../../services/getChat";
 import StatusFloatingComponent from "../../../component/floating-window/status";
 import AddStatusFloatingWindowComponent from "../../../component/floating-window/addStatus";
+import { io, Socket } from "socket.io-client";
 
-
+const socket = io(import.meta.env.VITE_APP_URL)
 const MainChat = () => {
   //chat state
   const addChat = useChatStore((state) => state.addChat)
@@ -25,6 +26,8 @@ const MainChat = () => {
   const setuserinfo = useUserStore((state) => state.setuserinfo)
   const setAllUser = useUserStore((state) => state.setalluser)
   const allUser = useUserStore((state) => state.alluser)
+  const userOnline = useUserStore((state) => state.userOnline)
+  const setUserOnline = useUserStore((state) => state.setUserOnline)
 
   //component state
   const [loading,setloading] = useState<boolean>(false)
@@ -103,10 +106,17 @@ const MainChat = () => {
     
   },[token])
 
+  //
   useEffect(() => {
-    
-  })
+    socket.emit('online',userInfo?.id)
+    socket.on("getUser",(user) => {
+      setUserOnline(user)
+    })
+  },[userInfo])
 
+  useEffect(() => {
+    console.log(userOnline)
+  })
 
   return(
     <div className='w-[100vw] h-[100vh] flex justify-center items-center'>

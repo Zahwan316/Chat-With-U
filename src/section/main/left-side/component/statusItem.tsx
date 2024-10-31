@@ -9,8 +9,10 @@ const StatusItemComponent = memo((props: statusContact):JSX.Element => {
   const setSessionChat = useChatStore((state) => state.setSessionChat)
 
   const handleClick = () => {
-    setSessionChat(props.id)
-    setStatusModalActive()
+    if(props.time !== "Belum ada status"){
+      setSessionChat(props.id)
+      setStatusModalActive()
+    }
   }
 
   return(
