@@ -36,13 +36,6 @@ const ContactComponent = () => {
         (t.user_from_id === item.user_target_id && t.user_target_id === item.user_from_id)
       ))
     );
-
-   /* const userWhoChat: Array<Data> = uniqueChat.filter(
-      (item) => item.user_from_id !== userinfo.id || item.user_target_id === userinfo.id
-    ); */
-
-   
-
     setfilteredChat(uniqueChat)
   },[chat])
 
@@ -80,6 +73,7 @@ const ContactComponent = () => {
                         sentBy={item.sentBy}
                         user_target_id={item.user_target_id}
                         img={items?.image === "/" ? "./img/profile.png" : items?.image}
+                    
                       />
                     )
                   }

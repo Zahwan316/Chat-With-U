@@ -2,7 +2,7 @@ import { AnimatePresence } from "framer-motion"
 import MainLayout from "../../../component/mainLayout"
 import MediaMenuMainComponent from "../right-side/mediaApp"
 import useComponentStore from "../../../state/component"
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import useUserStore from "../../../state/user";
@@ -16,7 +16,7 @@ import AddStatusFloatingWindowComponent from "../../../component/floating-window
 import { io, Socket } from "socket.io-client";
 
 const socket = io(import.meta.env.VITE_APP_URL)
-const MainChat = () => {
+const MainChat = memo(() => {
   //chat state
   const addChat = useChatStore((state) => state.addChat)
   const chat = useChatStore((state) => state.chat)
@@ -115,7 +115,7 @@ const MainChat = () => {
   },[userInfo])
 
   useEffect(() => {
-    console.log(userOnline)
+   
   })
 
   return(
@@ -152,6 +152,6 @@ const MainChat = () => {
         </AnimatePresence>
     </div>
   )
-}
+})
 
 export default MainChat

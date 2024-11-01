@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import useComponentStore from "../../../state/component";
 import AddNewChatButton from "./component/addNewChat";
 import StatusItemComponent from "./component/statusItem"
@@ -12,7 +12,7 @@ import { io } from "socket.io-client";
 import useUserStore from "../../../state/user";
 
 const socketio = io(import.meta.env.VITE_APP_URL)
-const StatusMenuComponent = () => {
+const StatusMenuComponent = memo(() => {
   const token = Cookies.get("token")
 
   //users store
@@ -62,10 +62,9 @@ const StatusMenuComponent = () => {
 
   //get status data
   useEffect(() => {
-    socketio.on("status",(status) => {
-      setStatus(status)
-      console.log(status)
-    })
+    socketio.on("status",(statusData) => {
+      setStatus(statusData)  
+  })
 
     const getdata = async() => {
         try{
@@ -88,8 +87,10 @@ const StatusMenuComponent = () => {
   },[])
 
   useEffect(() => {
-   
-  })
+    socketio.on("refresh-status", (statusdata) => {
+      addStatus(statusdata)
+    })
+  },[addStatus])   
 
   return(
     <AnimatePresence>
@@ -127,6 +128,6 @@ const StatusMenuComponent = () => {
         </motion.div>
     </AnimatePresence>
   )
-}
+})
 
 export default StatusMenuComponent

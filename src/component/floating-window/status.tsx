@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useState } from "react"
+import { memo, MouseEvent, useEffect, useState } from "react"
 import statusDummyData from "../../data/status"
 import InputComponent from "../../section/main/middle-side/input"
 import useComponentStore from "../../state/component"
@@ -19,7 +19,7 @@ import { io } from "socket.io-client"
 
 const socket = io("http://localhost:3000")
 
-const StatusFloatingComponent = () => {
+const StatusFloatingComponent = memo(() => {
   const token = Cookies.get("token")
 
   //user state
@@ -35,6 +35,7 @@ const StatusFloatingComponent = () => {
   //local state
   const [currindex,setcurrindex] = useState<number>(0)
   const [statusData,setStatusData] = useState<Array<status>>([])
+  const [isOpened,setIsOpened] = useState<boolean>(false)
 
   //chat state
   const sessionChat = useChatStore((state) => state.sessionChat)
@@ -58,7 +59,7 @@ const StatusFloatingComponent = () => {
   const currUsername = statusData.length != 0 && allUser.find((item) => item.id === statusData[0].user_id)?.username
 
   //delete status
-  const handleDeleteStatus = async(e: MouseEvent<HTMLButtonElement>) => {
+  const handleDeleteStatus = async(e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
     try{
       Swal.fire({
@@ -86,11 +87,18 @@ const StatusFloatingComponent = () => {
     const findStatus = status.filter((item) => 
       item.user_id === sessionChat
     )
+    setIsOpened(true)
     setStatusData(findStatus)
-  },[sessionChat])
+  },[sessionChat,status])
 
   useEffect(() => {
-    console.log(statusData[currindex])
+    if(statusData.length === 0 && isOpened === true){
+      setStatusModalActive()
+    }
+  },[statusData,isOpened])
+
+  useEffect(() => {
+    
   })
 
   return(
@@ -100,12 +108,13 @@ const StatusFloatingComponent = () => {
         titlePosition="left"
         onClick={setStatusModalActive}
     >
-        <div className="relative -top-4 flex gap-8">
+        <div className="relative -top-4 gap-0 flex flex-col justify-center">
             <p className="font-bold">{statusData[currindex]?.time}</p>
             {
               sessionChat === userinfo.id &&
-              <ButtonComponent body="Delete" onClick={handleDeleteStatus} width="" />
-
+              <div onClick={handleDeleteStatus} className="cursor-pointer self-end">
+                <Icons.TrashIcon fontsize="35" />
+              </div>
             }
         </div>
 
@@ -113,7 +122,7 @@ const StatusFloatingComponent = () => {
         <div className="w-full flex justify-center mb-4 gap-2">
             {
               statusData.map((item,index) => 
-                <div className={`w-3 h-3  rounded-full cursor-pointer ${index == currindex ? "bg-cyan-400" : "bg-gray-300"}`} data-index={index} onClick={handleClickSlider}></div>
+                <div key={item.id} className={`w-3 h-3  rounded-full cursor-pointer ${index == currindex ? "bg-cyan-400" : "bg-gray-300"}`} data-index={index} onClick={handleClickSlider}></div>
               )
             }
         </div>
@@ -133,7 +142,7 @@ const StatusFloatingComponent = () => {
 
             {
               statusData[currindex]?.img_id != null || statusData[currindex]?.type === "img"?
-              <img src={statusData[currindex]?.img_id} className='rounded-[8px]'/>
+              <img src={statusData[currindex]?.img_id as string} className='rounded-[8px]'/>
               :
               <div className="w-[30vw] h-[30vh] bg-emerald-600 rounded-md flex justify-center items-center p-8">
                 <p className="font-bold">
@@ -163,6 +172,6 @@ const StatusFloatingComponent = () => {
         
     </FloatingWindowComponent>
   )
-}
+})
 
 export default StatusFloatingComponent

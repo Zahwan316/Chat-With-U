@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, useState } from "react"
+import { ChangeEvent, memo, MouseEvent, useState } from "react"
 import useComponentStore from "../../state/component"
 import Icons from "../icons"
 import FloatingWindowComponent from "./floating"
@@ -10,6 +10,7 @@ import ErrorNotification from "../../function/errorSwal"
 import Cookies from 'js-cookie';
 import ShowNotification from "../../function/notification"
 import { io } from "socket.io-client"
+import { v4 as uuidv4 } from 'uuid';
 
 const tipeStatus: string[] = ['Gambar','Text']
 
@@ -34,7 +35,6 @@ const AddStatusFloatingWindowComponent = () => {
   const handleStatusMenu = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.currentTarget as HTMLElement
     const value = target.attributes.getNamedItem('data-menu')?.value
-    console.log(value)
     setCurrStatusMenu(value as string)
   }
 
@@ -44,7 +44,9 @@ const AddStatusFloatingWindowComponent = () => {
     setform(name,value)
   }
 
+  //status data structure
   const statusJsonStructure = {
+    id:uuidv4(),
     user_id:userInfo.id,
     img_id: null,
     text:form?.text,
