@@ -5,8 +5,6 @@ import { io } from "socket.io-client"
 import useUserStore from "../../../state/user"
 import chat from "../../../types/chat"
 
-
-
 const socketio = io(import.meta.env.VITE_APP_URL)
 const MainChatComponent = memo(() => {
   //chat state
@@ -19,12 +17,11 @@ const MainChatComponent = memo(() => {
   //user state
   const userinfo = useUserStore((state) => state.userinfo)
 
-
   //get chat every user send
   useEffect(() =>{
     socketio.on("message",(message) => {
       addchat(message)
-      setUnreadChat(message)
+      setUnreadChat([message])
     })
   },[])
 

@@ -6,12 +6,13 @@ import Cookies from 'js-cookie';
 type prop = {
     chat: Array<chat>,
     userInfo: user,
-    addChat: (chatvalue:chat) => void
+    addChat: (chatvalue:chat) => void,
+    token: string
 }
 
-const token = Cookies.get("token")
+//const token = Cookies.get("token")
 
-const getChat = ({chat,userInfo,addChat}: prop) => {
+const getChat = ({chat,userInfo,addChat,token}: prop) => {
     if(chat.length === 0 && userInfo){
         if(userInfo?.id){
           setTimeout(async() => {

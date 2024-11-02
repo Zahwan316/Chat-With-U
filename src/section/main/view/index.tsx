@@ -45,7 +45,7 @@ const MainChat = memo(() => {
   useEffect(() => {
     const getData = async() => {
       try{  
-        getChat({userInfo,chat,addChat})
+        getChat({userInfo,chat,addChat,token})
       }
       catch(e){
         if(import.meta.env.VITE_APP_STAGE === "BUILD"){
@@ -53,9 +53,9 @@ const MainChat = memo(() => {
         }
       }
     }
-    if(token && userInfo){
+
+    if(userInfo && token != undefined){
       getData()
-      
     }
   },[userInfo,token])
 

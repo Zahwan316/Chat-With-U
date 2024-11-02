@@ -8,6 +8,7 @@ import MainChatComponent from "./mainchat"
 import ProfileChatComponent from "./profile"
 import { useEffect, useState } from "react"
 import StatusComponent from "./component/status"
+import useUserStore from "../../../state/user"
 
 enum currMenu {
   profile="profile",
@@ -21,11 +22,12 @@ const MiddleSideComponent = () => {
   const profileMenuActive = useComponentStore((state) => state.profileMenuActive)
   const statusMenuActive = useComponentStore((state) => state.statusMenuActive)
   const [currmenu,setcurrmenu] = useState<string>(currMenu.welcome)
+  const userInfo = useUserStore((state) => state.userinfo)
 
   useEffect(() => {
     if(profileMenuActive) setcurrmenu(currMenu.profile);
     else if(statusMenuActive) setcurrmenu(currMenu.status);
-    else if(sessionChat === "") setcurrmenu(currMenu.welcome)
+    else if(sessionChat === "" || sessionChat === userInfo.id) setcurrmenu(currMenu.welcome)
     else if(sessionChat !== "") setcurrmenu(currMenu.chat)
   },[profileMenuActive,sessionChat,statusMenuActive])
 
