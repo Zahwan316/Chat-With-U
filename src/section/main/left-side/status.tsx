@@ -10,10 +10,13 @@ import useStatusStore from "../../../state/status";
 import status from "../../../types/status";
 import { io } from "socket.io-client";
 import useUserStore from "../../../state/user";
+import statusContact from "../../../types/statusContact";
 
 const socketio = io(import.meta.env.VITE_APP_URL)
 const StatusMenuComponent = memo(() => {
+  //local state
   const token = Cookies.get("token")
+  const date = new Date()
 
   //users store
   const allUser = useUserStore((state) => state.alluser)
@@ -73,8 +76,8 @@ const StatusMenuComponent = memo(() => {
                   "Authorization":`Bearer ${token}`
                 }
               })
-            const data = res.data.data
-            //ConsoleDebug(data)
+            const data: status[] = res.data.data
+            const activeStatus = data.filter((item) => item.expired_at && date.toISOString() < item.expired_at)
             addStatus(data)
         }
         catch(e){
@@ -91,6 +94,16 @@ const StatusMenuComponent = memo(() => {
       addStatus(statusdata)
     })
   },[addStatus])   
+
+  useEffect(() => {
+    const currStatus = status.filter((item) => item.expired_at && date.toISOString() > item.expired_at)
+    for(const key in currStatus){
+      if(date.toISOString() > currStatus[key].expired_at){
+        socketio.emit("deleteStatus",{id:currStatus[key]?.id,token:Cookies.get("token")})
+      }
+    }
+
+  },[date,status])
 
   return(
     <AnimatePresence>
