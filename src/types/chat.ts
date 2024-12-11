@@ -8,7 +8,8 @@ type chat = {
     created_Date: string,
     sent_by?: "me" | "other"
     file?:string,
-    token?: string
+    token?: string,
+    group_id?: string
   }
 
 export default chat

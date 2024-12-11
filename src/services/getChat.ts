@@ -1,7 +1,6 @@
 import axios from "axios"
 import chat from "../types/chat"
 import user from "../types/user"
-import Cookies from 'js-cookie';
 
 type prop = {
     chat: Array<chat>,

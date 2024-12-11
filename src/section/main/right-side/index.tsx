@@ -1,7 +1,7 @@
-import InfoComponent from "./info"
+import InfoComponent from "./Info"
 
 const RightSideComponent = () => {
-  return(
+  return (
     <>
       <InfoComponent />
     </>

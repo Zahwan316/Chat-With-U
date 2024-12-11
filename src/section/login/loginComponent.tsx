@@ -1,12 +1,12 @@
 import { ChangeEvent, useEffect, useState } from "react"
 import useFormStore from "../../state/form"
-import InputComponent from "../../component/input/input"
-import ButtonComponent from "../../component/button/button"
+import InputComponent from "../../Component/Input"
+import ButtonComponent from "../../Component/Button"
 import axios from "axios"
 import Swal from "sweetalert2"
 import Cookies from "js-cookie"
 import { useNavigate } from "react-router-dom"
-import BoxLoginRegister from "../../component/box/boxLoginRegister"
+import BoxLoginRegister from "../../Component/BoxLogin&Register"
 import ErrorNotification from "../../function/errorSwal"
 
 type errorState = {
@@ -18,21 +18,21 @@ const LoginComponent = () => {
   const form = useFormStore((state) => state.form)
   const setForm = useFormStore((state) => state.setform)
   const navigate = useNavigate()
-  const [error,seterror] = useState<errorState>({email:"",password:""})
+  const [error, seterror] = useState<errorState>({ email: "", password: "" })
 
-  const handleForm = (e:ChangeEvent<HTMLInputElement>) => {
-    const {name,value} = e.target
-    setForm(name,value) 
+  const handleForm = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setForm(name, value)
   }
 
   const validateInput = () => {
     const errors = {}
 
-    if(form?.email === ""){
+    if (form?.email === "") {
       errors.email = "Email tidak boleh kosong"
     }
 
-    if(form?.password === ""){
+    if (form?.password === "") {
       errors.password = "Password tidak boleh kosong"
     }
 
@@ -42,28 +42,28 @@ const LoginComponent = () => {
   }
 
   const sendData = () => {
-    const send = async() => {
-      try{
+    const send = async () => {
+      try {
         console.log(validateInput())
-        if(validateInput() === 0){
-          const res = await axios.post(`${import.meta.env.VITE_APP_URL}auth/login`,form)
+        if (validateInput() === 0) {
+          const res = await axios.post(`${import.meta.env.VITE_APP_URL}auth/login`, form)
           console.log(res)
           Swal.fire({
-            title:"Login berhasil",
-            icon:"success",
-            timer:1000
+            title: "Login berhasil",
+            icon: "success",
+            timer: 1000
           })
-          Cookies.set("token",res.data.token)
+          Cookies.set("token", res.data.token)
           setTimeout(() => {
             navigate("/chat")
-          },1100)
+          }, 1100)
         }
       }
-      catch(e){
-       ErrorNotification(e)
+      catch (e) {
+        ErrorNotification(e)
       }
     }
-    send()  
+    send()
   }
 
   useEffect(() => {
@@ -71,47 +71,47 @@ const LoginComponent = () => {
   })
 
   useEffect(() => {
-    setForm("email","")
-    setForm("password","")
-  },[])
+    setForm("email", "")
+    setForm("password", "")
+  }, [])
 
-  return(
+  return (
     <BoxLoginRegister
       title='Login'
     >
-        <div className='w-full'>   
-          <InputComponent 
-              name="email"
-              onChange={handleForm}
-              placeholder="Email"
-              type="text"
-              width="100%"
-              error={Object.entries(error).length != 0 && error?.email}
-              usingIcon={false}
-          />
-          <InputComponent 
-              name="password"
-              onChange={handleForm}
-              placeholder="Password"
-              type="password"
-              width="100%"
-              error={Object.entries(error).length != 0 && error?.password}
-              usingIcon={false}
-          />
-        </div>
-        <div className='mb-10'>
-          <p className='text-[#e7e6e6] text-sm'>Belum mempunyai akun? <a className='text-[#05BDF8] cursor-pointer' onClick={() => {navigate("/register")}}>Registrasi Sekarang</a></p>
-        </div>
-        <div className=''>
-          <ButtonComponent 
-            body="Login"
-            onClick={sendData}
-            width="full"
-          />
-        </div>
+      <div className='w-full'>
+        <InputComponent
+          name="email"
+          onChange={handleForm}
+          placeholder="Email"
+          type="text"
+          width="100%"
+          error={Object.entries(error).length != 0 && error?.email}
+          usingIcon={false}
+        />
+        <InputComponent
+          name="password"
+          onChange={handleForm}
+          placeholder="Password"
+          type="password"
+          width="100%"
+          error={Object.entries(error).length != 0 && error?.password}
+          usingIcon={false}
+        />
+      </div>
+      <div className='mb-10'>
+        <p className='text-[#e7e6e6] text-sm'>Belum mempunyai akun? <a className='text-[#05BDF8] cursor-pointer' onClick={() => { navigate("/register") }}>Registrasi Sekarang</a></p>
+      </div>
+      <div className=''>
+        <ButtonComponent
+          body="Login"
+          onClick={sendData}
+          width="full"
+        />
+      </div>
     </BoxLoginRegister>
-        
-    
+
+
   )
 }
 
