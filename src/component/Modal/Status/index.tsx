@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
 import ShowNotification from '../../../function/notification';
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:3000');
+const socket = io(import.meta.env.VITE_APP_URL);
 
 const StatusFloatingComponent = memo(() => {
   const token = Cookies.get('token');

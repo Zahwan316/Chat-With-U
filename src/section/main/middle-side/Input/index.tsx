@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from "uuid"
 import chat from "../../../../types/chat"
 import Cookies from 'js-cookie';
 
-const socket = io("http://localhost:3000")
+const socket = io(import.meta.env.VITE_APP_URL)
 const InputComponent = () => {
   const form = useFormStore((state) => state.form)
   const setform = useFormStore((state) => state.setform)

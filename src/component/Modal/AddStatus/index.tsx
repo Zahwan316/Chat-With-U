@@ -14,7 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const tipeStatus: string[] = ['Gambar', 'Text']
 
-const socket = io("http://localhost:3000")
+const socket = io(import.meta.env.VITE_APP_URL)
 const AddStatusFloatingWindowComponent = () => {
   const [currStatusMenu, setCurrStatusMenu] = useState<string>("gambar")
   const date = new Date()

@@ -11,6 +11,7 @@ type InputProperty = {
     onClick?: React.MouseEventHandler,
     label?: string,
     value: string,
+    required: boolean,
 }
 
 export default InputProperty

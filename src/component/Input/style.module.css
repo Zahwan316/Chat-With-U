@@ -1,0 +1,15 @@
+.input {
+  @apply w-full bg-[#5356FF40] p-3 outline-none rounded-md placeholder-[#f4f4f490] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+}
+
+.inputIcon {
+  @apply pr-10
+}
+
+.textarea {
+  @apply resize-none h-32
+}
+
+.error {
+  @apply border border-red-500
+}

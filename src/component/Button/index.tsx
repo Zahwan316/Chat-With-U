@@ -5,9 +5,10 @@ type buttonProps = {
   body: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
   width: 'full' | string;
+  type?: "submit" | "button"
 };
 
-const ButtonComponent = ({ body, onClick, width }: buttonProps) => {
+const ButtonComponent = ({ body, onClick, width, type }: buttonProps) => {
   return (
     <motion.button
       whileHover={{
@@ -20,6 +21,7 @@ const ButtonComponent = ({ body, onClick, width }: buttonProps) => {
       className={`${
         width === 'full' ? 'w-full' : `w-${width}`
       } border border-white px-8 py-2 outline-none active:outline-none`}
+      type={type}
     >
       {body}
     </motion.button>

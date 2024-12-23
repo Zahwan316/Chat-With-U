@@ -2,8 +2,12 @@ import { memo } from 'react';
 import { motion } from 'framer-motion';
 import Icons from '../Icons';
 import InputProperty from '../../types/inputProperty';
+import clsx from 'clsx';
+import styles from './style.module.css'
+import { useForm } from 'react-hook-form';
 
 const InputComponent = memo((props: InputProperty) => {
+  const { register, handleSubmit, formState: {errors}} = useForm();
   return (
     <div
       style={{ width: props.width }}
@@ -21,8 +25,8 @@ const InputComponent = memo((props: InputProperty) => {
           value={props.value}
           name={props.name}
           placeholder={props.placeholder}
-          className={`w-full resize-none h-32 bg-[#5356FF40] p-3 ${props.usingIcon && 'pr-10'
-            } outline-none rounded-md placeholder-[#f4f4f490] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
+          className={clsx(styles.input, props.usingIcon && styles.inputIcon, styles.textarea)}
+          {...register(props.name, {required: props.required})}
         >
           test
         </motion.textarea>
@@ -30,12 +34,13 @@ const InputComponent = memo((props: InputProperty) => {
         <motion.input
           whileFocus={{ backgroundColor: '#5356FF90' }}
           type={props.type}
-          onChange={props.onChange}
+          //onChange={props.onChange}
           value={props.value}
-          name={props.name}
+          //name={props.name}
           placeholder={props.placeholder}
-          className={`w-full bg-[#5356FF40] p-3 ${props.usingIcon && 'pr-10'
-            } outline-none rounded-md placeholder-[#f4f4f490] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
+          className={clsx(styles.input,props.usingIcon && styles.inputIcon)}
+          {...register(props.name, {required: props.required})}
+
         />
       )}
 
@@ -48,7 +53,7 @@ const InputComponent = memo((props: InputProperty) => {
         </div>
       )}
 
-      {props.error && <p className='text-sm  font-bold'>*{props.error}</p>}
+      {errors.name && <p className='text-sm  font-bold'>*This field required</p>}
     </div>
   );
 });
