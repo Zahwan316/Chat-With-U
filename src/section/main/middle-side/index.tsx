@@ -1,7 +1,6 @@
 import { AnimatePresence } from "framer-motion"
 import useChatStore from "../../../state/chat"
 import useComponentStore from "../../../state/component"
-import WelcomeChat from "../../../Component/Welcome"
 import ProfileMainComponent from "./component/Profile"
 import InputComponent from "./Input"
 import MainChatComponent from "./MainChat"
@@ -9,6 +8,7 @@ import ProfileChatComponent from "./Profile"
 import { useEffect, useState } from "react"
 import StatusComponent from "./component/Status"
 import useUserStore from "../../../state/user"
+import WelcomeChat from "../../../component/Welcome"
 
 enum currMenu {
   profile = "profile",

@@ -1,4 +1,5 @@
-import Icons from "../../../../../Component/Icons"
+import Icons from "../../../../../component/icons"
+
 
 type props = {
   set: () => void

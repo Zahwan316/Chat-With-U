@@ -1,4 +1,5 @@
-import ChatMenuComponent from "../menuitem/chatMenu"
+
+import ChatMenuComponent from "../menuitem/ChatMenu"
 import SettingsMenuComponent from "../menuitem/SettingsMenu"
 import StatusMenuComponent from "../menuitem/StatusMenu"
 

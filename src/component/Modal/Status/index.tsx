@@ -2,7 +2,6 @@ import { memo, MouseEvent, useEffect, useState } from 'react';
 import statusDummyData from '../../data/status';
 import InputComponent from '../../../section/main/middle-side/Input';
 import useComponentStore from '../../../state/component';
-import Icons from '../../Icons';
 import FloatingWindowComponent from '..';
 import useChatStore from '../../../state/chat';
 import status from '../../../types/status';
@@ -15,6 +14,7 @@ import Cookies from 'js-cookie';
 import Swal from 'sweetalert2';
 import ShowNotification from '../../../function/notification';
 import { io } from 'socket.io-client';
+import Icons from '../../icons';
 
 const socket = io(import.meta.env.VITE_APP_URL);
 

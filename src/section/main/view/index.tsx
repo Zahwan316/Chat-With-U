@@ -1,5 +1,4 @@
 import { AnimatePresence } from "framer-motion"
-import MainLayout from "../../../Component/mainLayout"
 import MediaMenuMainComponent from "../right-side/MediaApp"
 import useComponentStore from "../../../state/component"
 import { memo, useEffect, useState } from "react";
@@ -8,14 +7,15 @@ import Cookies from 'js-cookie';
 import useUserStore from "../../../state/user";
 import axios from "axios";
 import useChatStore from "../../../state/chat";
-import LoadingComponent from "../../../Component/Loading";
-import NewChatComponent from "../../../Component/Modal/NewChat";
 import getChat from "../../../services/getChat";
-import StatusFloatingComponent from "../../../Component/Modal/Status";
-import AddStatusFloatingWindowComponent from "../../../Component/Modal/AddStatus";
 import { io } from "socket.io-client";
 import getGroup from "../../../services/getGroup";
 import useGroupStore from "../../../state/group";
+import MainLayout from "../../../component/mainLayout";
+import LoadingComponent from "../../../component/Loading";
+import NewChatComponent from "../../../component/Modal/NewChat";
+import StatusFloatingComponent from "../../../component/Modal/Status";
+import AddStatusFloatingWindowComponent from "../../../component/Modal/AddStatus";
 
 const socket = io(import.meta.env.VITE_APP_URL)
 const MainChat = memo(() => {

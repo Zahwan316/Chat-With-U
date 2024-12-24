@@ -3,9 +3,7 @@ import useComponentStore from "../../../../../state/component"
 import useFormStore from "../../../../../state/form"
 import useUserStore from "../../../../../state/user"
 import InputProperty from "../../../../../types/inputProperty"
-import ButtonComponent from "../../../../../Component/Button"
-import Icons from "../../../../../Component/Icons"
-import InputComponent from "../../../../../Component/Input"
+
 import { motion } from 'framer-motion';
 import ErrorNotification from "../../../../../function/errorSwal"
 import axios from "axios"
@@ -13,6 +11,9 @@ import Cookies from 'js-cookie';
 import ConsoleDebug from "../../../../../function/debugConsole"
 import { v4 as uuidv4 } from "uuid"
 import ShowNotification from "../../../../../function/notification"
+import Icons from "../../../../../component/icons"
+import InputComponent from "../../Input"
+import ButtonComponent from "../../../../../component/Button"
 
 const ProfileMainComponent = () => {
   const setProfileMenuActive = useComponentStore((state) => state.setProfileMenuActive)

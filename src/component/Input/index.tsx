@@ -1,13 +1,13 @@
 import { memo } from 'react';
 import { motion } from 'framer-motion';
-import Icons from '../Icons';
 import InputProperty from '../../types/inputProperty';
 import clsx from 'clsx';
 import styles from './style.module.css'
-import { useForm } from 'react-hook-form';
+import Icons from '../icons';
 
 const InputComponent = memo((props: InputProperty) => {
-  const { register, handleSubmit, formState: {errors}} = useForm();
+  const isInputError = props.errors && props.errors[props.name]
+
   return (
     <div
       style={{ width: props.width }}
@@ -16,17 +16,15 @@ const InputComponent = memo((props: InputProperty) => {
       {props.label && (
         <label className='font-bold text-md mb-2'>{props.label}</label>
       )}
-
       {props.type === 'textarea' ? (
         <motion.textarea
           whileFocus={{ backgroundColor: '#5356FF90' }}
-          type={props.type}
-          onChange={props.onChange}
-          value={props.value}
-          name={props.name}
+          //type={props.type}
+          //onChange={props.onChange}
+          value={props.value}         
           placeholder={props.placeholder}
           className={clsx(styles.input, props.usingIcon && styles.inputIcon, styles.textarea)}
-          {...register(props.name, {required: props.required})}
+          {...props.register(props.name, {required: props.required})}
         >
           test
         </motion.textarea>
@@ -36,11 +34,10 @@ const InputComponent = memo((props: InputProperty) => {
           type={props.type}
           //onChange={props.onChange}
           value={props.value}
-          //name={props.name}
+          formNoValidate
           placeholder={props.placeholder}
-          className={clsx(styles.input,props.usingIcon && styles.inputIcon)}
-          {...register(props.name, {required: props.required})}
-
+          className={clsx(styles.input,props.usingIcon && styles.inputIcon, isInputError && styles.error)}
+          {...props.register(props.name, {required: props.required, pattern: props.pattern})}
         />
       )}
 
@@ -53,7 +50,7 @@ const InputComponent = memo((props: InputProperty) => {
         </div>
       )}
 
-      {errors.name && <p className='text-sm  font-bold'>*This field required</p>}
+      {isInputError && <p className='text-sm mt-2 text-red-500 '>*{ isInputError?.message}</p>}
     </div>
   );
 });

@@ -1,7 +1,7 @@
+import Icons from "../../../../component/icons";
 import useChatStore from "../../../../state/chat";
 import useComponentStore from "../../../../state/component"
 import useUserStore from "../../../../state/user";
-import Icons from "../../../../Component/Icons"
 import MediaComponent from "../Media"
 import { motion } from 'framer-motion';
 

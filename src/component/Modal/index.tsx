@@ -1,5 +1,5 @@
-import Icons from '../Icons';
 import { motion } from 'framer-motion';
+import Icons from '../icons';
 
 type props = {
   children: React.ReactNode;

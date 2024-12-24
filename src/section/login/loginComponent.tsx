@@ -1,20 +1,30 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import useFormStore from '../../state/form';
-import InputComponent from '../../Component/Input';
-import ButtonComponent from '../../Component/Button';
+
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
-import BoxLoginRegister from '../../Component/BoxLogin&Register';
+
 import ErrorNotification from '../../function/errorSwal';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import InputProperty from '../../types/inputProperty';
+import BoxLoginRegister from '../../component/BoxLogin&Register';
+
+import ButtonComponent from '../../component/Button';
+import useInputLogic from '../../hooks/useForm';
+import InputComponent from '../../component/Input';
+import { REG_EXP } from '../../constant/Regexp';
 
 type errorState = {
   email: string;
   password: string;
 };
+
+type dataLogin = {
+  email: string,
+  password: string
+}
 
 const LoginComponent = () => {
   const form = useFormStore((state) => state.form);
@@ -22,9 +32,10 @@ const LoginComponent = () => {
   const navigate = useNavigate();
   const [error, seterror] = useState<errorState>({ email: '', password: '' });
   const {
+    register,
     handleSubmit,
-    //formState: { errors },
-  } = useForm<InputProperty>()
+    errors
+  } = useInputLogic()
 
   const handleForm = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -47,13 +58,13 @@ const LoginComponent = () => {
     return Object.entries(errors).length;
   };
 
-  const sendData = () => {
+  const sendData = (data: dataLogin) => {
     const send = async () => {
       try {
-        console.log(validateInput());
+        //console.log(validateInput());
         const res = await axios.post(
           `${import.meta.env.VITE_APP_URL}auth/login`,
-          form
+          data
         );
         console.log(res);
         Swal.fire({
@@ -65,8 +76,7 @@ const LoginComponent = () => {
         setTimeout(() => {
           navigate('/chat');
         }, 1100);
-        if (validateInput() === 0) {
-        }
+  
       } catch (e) {
         ErrorNotification(e);
       }
@@ -75,10 +85,13 @@ const LoginComponent = () => {
   };
 
   useEffect(() => {
-    console.log(error);
+   //console.log(error);
   });
 
-  const onSubmit: SubmitHandler<InputProperty> = (data) => sendData();
+  const onSubmit: SubmitHandler<InputProperty> = (data) => {
+    sendData(data)
+    console.log(data)
+  };
 
   useEffect(() => {
     setForm('email', '');
@@ -91,11 +104,19 @@ const LoginComponent = () => {
         <div className='w-full'>
           <InputComponent
             name='email'
+            required={{ value: true, message:"Email harus diisi" }}
             onChange={handleForm}
             placeholder='Email'
             type='text'
             width='100%'
             usingIcon={false}
+            register={register}
+            errors={errors}
+            label='Email'
+            pattern={{
+              value: REG_EXP.email,
+              message: "Isi format email dengan benar"
+            }}
           />
           <InputComponent
             name='password'
@@ -104,6 +125,10 @@ const LoginComponent = () => {
             type='password'
             width='100%'
             usingIcon={false}
+            register={register}
+            errors={errors}
+            required={{ value: true, message:"Password harus diisi" }}
+            label='Password'
           />
         </div>
         <div className='mb-10'>
@@ -122,7 +147,7 @@ const LoginComponent = () => {
         <div className=''>
           <ButtonComponent
             body='Login'
-            onClick={sendData}
+            //onClick={sendData}
             width='full'
             type='submit'
           />

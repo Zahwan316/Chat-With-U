@@ -1,6 +1,5 @@
 import { ChangeEvent, memo, MouseEvent, useState } from "react"
 import useComponentStore from "../../../state/component"
-import Icons from "../../Icons"
 import FloatingWindowComponent from ".."
 import ButtonComponent from "../../Button"
 import useFormStore from "../../../state/form"
@@ -11,6 +10,7 @@ import Cookies from 'js-cookie';
 import ShowNotification from "../../../function/notification"
 import { io } from "socket.io-client"
 import { v4 as uuidv4 } from 'uuid';
+import Icons from "../../icons"
 
 const tipeStatus: string[] = ['Gambar', 'Text']
 

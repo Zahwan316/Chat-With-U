@@ -1,15 +1,15 @@
 import { ChangeEvent, useEffect, useRef } from "react"
 import useFormStore from "../../../../state/form"
-import Icons from "../../../../Component/Icons"
 import useChatStore from "../../../../state/chat"
 import io from "socket.io-client"
 import useUserStore from "../../../../state/user"
 import { v4 as uuidv4 } from "uuid"
 import chat from "../../../../types/chat"
 import Cookies from 'js-cookie';
+import Icons from "../../../../component/icons"
 
 const socket = io(import.meta.env.VITE_APP_URL)
-const InputComponent = () => {
+const InputChatComponent = () => {
   const form = useFormStore((state) => state.form)
   const setform = useFormStore((state) => state.setform)
   const resetform = useFormStore((state) => state.resetform)
@@ -80,4 +80,4 @@ const InputComponent = () => {
   )
 }
 
-export default InputComponent
+export default InputChatComponent

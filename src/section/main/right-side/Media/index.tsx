@@ -1,5 +1,5 @@
+import Icons from "../../../../component/icons";
 import useComponentStore from "../../../../state/component"
-import Icons from "../../../../Component/Icons"
 import { motion } from 'framer-motion';
 
 const MediaComponent = () => {

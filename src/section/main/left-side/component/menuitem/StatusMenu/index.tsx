@@ -1,4 +1,5 @@
-import Icons from "../../../../../../Component/Icons"
+
+import Icons from "../../../../../../component/icons"
 import useComponentStore from "../../../../../../state/component"
 
 const StatusMenuComponent = () => {

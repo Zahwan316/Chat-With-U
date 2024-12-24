@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 type buttonProps = {
   body: string;
-  onClick: MouseEventHandler<HTMLButtonElement>;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   width: 'full' | string;
   type?: "submit" | "button"
 };

@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react"
-import BoxLoginRegister from "../../Component/BoxLogin&Register"
-import InputComponent from "../../Component/Input"
 import useFormStore from "../../state/form"
-import ButtonComponent from "../../Component/Button"
 import axios from "axios"
 import Swal from "sweetalert2"
 import { useNavigate } from "react-router-dom"
 import ErrorNotification from "../../function/errorSwal"
 import ConsoleDebug from "../../function/debugConsole"
+import BoxLoginRegister from "../../component/BoxLogin&Register"
+import InputComponent from "../main/middle-side/Input"
 
 const RegisterMainComponent = () => {
   const setform = useFormStore((state) => state.setform)
