@@ -10,10 +10,11 @@ type state = {
 }
 
 type action = {
-    setuserinfo:(data:user) => void,
-    setalluser:(data:Array<user>) => void,
-    setsearcheduser:(data:Array<user>) => void
-    setUserOnline:(data:Array<onlineUser>) => void
+    setuserinfo: (data:user) => void,
+    setalluser: (data:Array<user>) => void,
+    setsearcheduser: (data:Array<user>) => void
+    setUserOnline: (data:Array<onlineUser>) => void,
+    resetSearchedUser: () => void,
 }
 
 const useUserStore = create<state & action>((set) => ({
@@ -28,14 +29,16 @@ const useUserStore = create<state & action>((set) => ({
         createdDate: "",
         image: "",
     },
-    alluser:[],
-    searchedUser:[],
-    userOnline:[],
+    alluser: [],
+    searchedUser: [],
+    userOnline: [],
 
-    setuserinfo:(data:user) => set(() => ({userinfo:data})),
-    setalluser:(data:Array<user>) => set(() => ({alluser:data})),
-    setsearcheduser:(data:Array<user>) => set(() => ({searchedUser:data})),
-    setUserOnline:(data:Array<onlineUser>) => set(() => ({userOnline:data})),
+    setuserinfo: (data:user) => set(() => ({userinfo:data})),
+    setalluser: (data:Array<user>) => set(() => ({alluser:data})),
+    setsearcheduser: (data:Array<user>) => set(() => ({searchedUser:data})),
+    setUserOnline: (data:Array<onlineUser>) => set(() => ({userOnline:data})),
+
+    resetSearchedUser: () => set(() => ({searchedUser: []}))
 }))
 
 export default useUserStore

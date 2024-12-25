@@ -3,7 +3,7 @@ import { FieldErrors, UseFormRegister, ValidationRule } from "react-hook-form"
 
 type InputProperty = {
     type: string,
-    onChange: ChangeEventHandler<HTMLInputElement> | ChangeEventHandler<HTMLTextAreaElement>,
+    onChange?: ChangeEventHandler<HTMLInputElement> | ChangeEventHandler<HTMLTextAreaElement>,
     name: string,
     placeholder: string,
     width?: string,
@@ -16,7 +16,10 @@ type InputProperty = {
     errors?: FieldErrors,
     register: UseFormRegister<any>,
     pattern?: ValidationRule<RegExp>,
-    minLength?: ValidationRule<string | number>,
+    minLength?: ValidationRule<number>,
+    maxLength?: ValidationRule<number>,
+    max?: number,
+    validate?: (value: string) => string | boolean;
 }
 
 export default InputProperty

@@ -1,7 +1,5 @@
-import { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react';
+import { useState } from 'react';
 import useComponentStore from '../../../state/component';
-import useFormStore from '../../../state/form';
-import Icons from '../../Icons';
 import InputComponent from '../../Input';
 import ListUser from '../../User';
 import FloatingWindowComponent from '..';
@@ -10,30 +8,32 @@ import useUserStore from '../../../state/user';
 import { motion } from 'framer-motion';
 import useChatStore from '../../../state/chat';
 import Cookies from 'js-cookie';
+import useInputLogic from '../../../hooks/useForm';
+import { SubmitHandler } from 'react-hook-form';
+
+type data = {
+  no_telepon: number
+}
 
 const NewChatComponent = () => {
   const setNewChatMenuActive = useComponentStore(
     (state) => state.setNewChatMenuActive
   );
-  const setform = useFormStore((state) => state.setform);
-  const form = useFormStore((state) => state.form);
   const searcheduser = useUserStore((state) => state.searchedUser);
   const setsearcheduser = useUserStore((state) => state.setsearcheduser);
+  const resetSearcheduser = useUserStore((state) => state.resetSearchedUser);
   const [searched, setsearched] = useState<boolean>(false);
   const setSessionChat = useChatStore((state) => state.setSessionChat);
   const userinfo = useUserStore((state) => state.userinfo);
   const [description, setdescription] = useState<string>();
   const token = Cookies.get('token');
+  const { register, errors, handleSubmit,} = useInputLogic();
 
-  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setform(name, value);
-  };
 
-  const handleSearchUser = async () => {
+  const handleSearchUser = async (dataForm: data) => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_APP_URL}api/user/${form?.no_telepon}`,
+        `${import.meta.env.VITE_APP_URL}api/user/${dataForm?.no_telepon}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -51,20 +51,19 @@ const NewChatComponent = () => {
     }
   };
 
+  const onSubmit: SubmitHandler<data> = (data) => handleSearchUser(data)
+
   const handleClickUser = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
     const id = target.attributes.getNamedItem('data-id')?.value;
     if (id != userinfo.id) {
       setSessionChat(id as string);
+      resetSearcheduser()
       setNewChatMenuActive();
     } else {
       setdescription('Tidak bisa chat dengan diri sendiri');
     }
   };
-
-  useEffect(() => {
-    console.log('search user', searcheduser);
-  });
 
   return (
     <FloatingWindowComponent
@@ -95,17 +94,23 @@ const NewChatComponent = () => {
             ))
           )}
         </div>
-        <div className='w-96 flex flex-row items-center '>
-          <InputComponent
-            placeholder='Cari no telpon'
-            usingIcon={true}
-            type='number'
-            name='no_telepon'
-            onChange={handleInput}
-            onClick={handleSearchUser}
-            width='100%'
-          />
-        </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className='w-96 flex flex-row items-center '>
+              <InputComponent
+                placeholder='Cari no telpon'
+                usingIcon={true}
+                type='number'
+                name='no_telepon'
+                //onChange={handleInput}
+                //onClick={handleSearchUser}
+                width='100%'
+                register={register}
+                errors={errors}
+                required={{ value: true, message: "No telepon harap diisi"}}
+                minLength={{ value: 12, message: "Panjang nomor minimal 12"}}
+              />
+          </div>
+        </form>
       </div>
     </FloatingWindowComponent>
   );

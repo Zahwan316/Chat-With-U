@@ -1,5 +1,5 @@
 .input {
-  @apply w-full bg-[#5356FF40] p-3 outline-none rounded-md placeholder-[#f4f4f490] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+  @apply w-full bg-[#5356FF40] mb-2 p-3 outline-none rounded-md placeholder-[#f4f4f490] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
 }
 
 .inputIcon {

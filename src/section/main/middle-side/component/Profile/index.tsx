@@ -12,8 +12,19 @@ import ConsoleDebug from "../../../../../function/debugConsole"
 import { v4 as uuidv4 } from "uuid"
 import ShowNotification from "../../../../../function/notification"
 import Icons from "../../../../../component/icons"
-import InputComponent from "../../Input"
+
 import ButtonComponent from "../../../../../component/Button"
+import InputComponent from "../../../../../component/Input"
+import useInputLogic from "../../../../../hooks/useForm"
+import { SubmitHandler, useForm } from "react-hook-form"
+
+type dataForm = {
+  fullname: string,
+  username: string,
+  email: string,
+  number_phone: number,
+  bio: string,
+}
 
 const ProfileMainComponent = () => {
   const setProfileMenuActive = useComponentStore((state) => state.setProfileMenuActive)
@@ -23,76 +34,91 @@ const ProfileMainComponent = () => {
   const setuserinfo = useUserStore((state) => state.setuserinfo)
   const token = Cookies.get("token")
   const [updater, setupdater] = useState<string>("")
+  const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm<dataForm>({
+    defaultValues: {
+      fullname: "",
+      username: "",
+      email: "",
+      number_phone: 0,
+      bio: "",
+    },
+  });
 
   const handleForm = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setform(name, value)
   }
 
-  useEffect(() => {
-    console.log(form)
-  })
-
   const PropertyInput: Array<InputProperty> = [
     {
       label: 'Fullname',
       name: "fullname",
-      onChange: handleForm,
+      //onChange: handleForm,
       placeholder: "",
       type: "text",
       usingIcon: false,
       error: "",
       //onClick:() => {},
       width: "100%",
-      value: form.fullname
+      //value: form.fullname,
+      register: register,
+      errors: errors,
     },
     {
       label: 'Username',
       name: "username",
-      onChange: handleForm,
+     // onChange: handleForm,
       placeholder: "",
       type: "text",
       usingIcon: false,
       error: "",
       //onClick:() => {},
       width: "100%",
-      value: form.username
+      //value: form.username,
+      register: register,
+      errors: errors,
     },
     {
       label: 'Email',
       name: "email",
-      onChange: handleForm,
+      //onChange: handleForm,
       placeholder: "",
       type: "email",
       usingIcon: false,
       error: "",
       //onClick:() => {},
       width: "100%",
-      value: form.email
+      //value: form.email,
+      register: register,
+      errors: errors,
     },
     {
       label: 'Nomor Telepon',
       name: "number_phone",
-      onChange: handleForm,
+      //onChange: handleForm,
       placeholder: "",
       type: "number",
       usingIcon: false,
       error: "",
       //onClick:() => {},
       width: "100%",
-      value: form.number_phone
+      //value: form.number_phone,
+      register: register,
+      errors: errors,
     },
     {
       label: 'Bio',
       name: "bio",
-      onChange: handleForm,
+      //onChange: handleForm,
       placeholder: "",
       type: "textarea",
       usingIcon: false,
       error: "",
       //onClick:() => {},
       width: "100%",
-      value: form.bio
+      //value: form.bio,
+      register: register,
+      errors: errors,
     },
   ]
 
@@ -105,11 +131,10 @@ const ProfileMainComponent = () => {
     return result;
   }, []);
 
-  const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const handleSendData = (dataForm: dataForm) => {
     const sendData = async () => {
       try {
-        const res = await axios.put(`${import.meta.env.VITE_APP_URL}api/user/id/${userinfo.id}`, form, {
+        const res = await axios.put(`${import.meta.env.VITE_APP_URL}api/user/id/${userinfo.id}`, dataForm, {
           "headers": {
             "Authorization": `Bearer ${token}`
           }
@@ -126,6 +151,8 @@ const ProfileMainComponent = () => {
     sendData()
   }
 
+  const onSubmit: SubmitHandler<dataForm> = (data) => handleSendData(data)
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -135,6 +162,13 @@ const ProfileMainComponent = () => {
           }
         })
         const data = res.data.data
+        
+        setValue("fullname", data.fullname || "");
+        setValue("username", data.username || "");
+        setValue("email", data.email || "");
+        setValue("number_phone", data.number_phone || 0);
+        setValue("bio", data.bio || "");
+
         setuserinfo(data)
 
       }
@@ -144,7 +178,7 @@ const ProfileMainComponent = () => {
     }
 
     getData()
-  }, [updater])
+  }, [updater, setValue])
 
   useEffect(() => {
     for (const key in userinfo) {
@@ -173,36 +207,40 @@ const ProfileMainComponent = () => {
 
         </div>
       </div>
-      <div className='flex flex-row p-6'>
-        <div className='w-1/3 mr-4'>
-          <img src='./img/profile.png' className="hover:brightness-75 cursor-pointer transition-all rounded-full" />
-        </div>
-        <div className="w-1/2 flex-col">
-          {
-            groupedInputs.map((group) =>
-              <div className='flex flex-row gap-6 items-start mb-2'>
-                {group.map((item) => (
-                  <InputComponent
-                    name={item.name}
-                    onChange={item.onChange}
-                    placeholder={item.placeholder}
-                    type={item.type}
-                    usingIcon={item.usingIcon}
-                    error={item.error}
-                    label={item.label}
-                    onClick={item.onClick}
-                    width={item.width}
-                    value={item.value}
-                  />
-                ))}
-              </div>
-            )
-          }
-          <div className='mt-16'>
-            <ButtonComponent body="Simpan perubahan" onClick={handleSubmit} width="" />
+      <form onSubmit={ handleSubmit(onSubmit) }>     
+        <div className='flex flex-row p-6'>
+          <div className='w-1/3 mr-4'>
+            <img src='./img/profile.png' className="hover:brightness-75 cursor-pointer transition-all rounded-full" />
+          </div>
+          <div className="w-1/2 flex-col">
+            {
+              groupedInputs.map((group) =>
+                <div className='flex flex-row gap-6 items-start mb-2'>
+                  {group.map((item) => (
+                    <InputComponent
+                      name={item.name}
+                      onChange={item.onChange}
+                      placeholder={item.placeholder}
+                      type={item.type}
+                      usingIcon={item.usingIcon}
+                      error={item.error}
+                      label={item.label}
+                      onClick={item.onClick}
+                      width={item.width}
+                      value={item.value}
+                      register={ item.register }
+                      errors={ item.errors }
+                    />
+                  ))}
+                </div>
+              )
+            }
+            <div className='mt-16'>
+              <ButtonComponent body="Simpan perubahan" type="submit" width="" />
+            </div>
           </div>
         </div>
-      </div>
+      </form>
     </motion.div>
   )
 }

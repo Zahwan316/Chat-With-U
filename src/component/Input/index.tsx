@@ -37,20 +37,23 @@ const InputComponent = memo((props: InputProperty) => {
           formNoValidate
           placeholder={props.placeholder}
           className={clsx(styles.input,props.usingIcon && styles.inputIcon, isInputError && styles.error)}
-          {...props.register(props.name, {required: props.required, pattern: props.pattern})}
+          {...props.register(props.name, {required: props.required, pattern: props.pattern, minLength: props.minLength, maxLength: props.maxLength, validate: props.validate})}
+          maxLength={props.max}
+          // required: props.required, pattern: props.pattern, minLength: props.minLength
         />
       )}
 
       {props.usingIcon && (
-        <div
+        <button
           className='absolute right-2 cursor-pointer'
           onClick={props.onClick}
+          type='submit'
         >
           <Icons.SearchIcon fontsize='25' />
-        </div>
+        </button>
       )}
 
-      {isInputError && <p className='text-sm mt-2 text-red-500 '>*{ isInputError?.message}</p>}
+      {isInputError && <p className='text-sm  text-red-500 '>*{ isInputError?.message}</p>}
     </div>
   );
 });
