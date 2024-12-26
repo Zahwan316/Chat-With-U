@@ -32,18 +32,18 @@ const RegisterMainComponent = () => {
     number_phone: '',
   });
   const navigate = useNavigate();
-  const { register, errors, handleSubmit} = useInputLogic();
+  const { register, errors, handleSubmit, getValues} = useInputLogic();
 
   const handleForm = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setform(name, value);
   };
 
-  const handleRegister = async () => {
+  const handleRegister = async (dataForm: dataFrom) => {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_APP_URL}auth/register`,
-        form
+        dataForm
       );
       Swal.fire({
         text: res.data?.message,
@@ -55,12 +55,11 @@ const RegisterMainComponent = () => {
         navigate('/login');
       }, 1300);
     } catch (e) {
-      console.log(validateInput());
       ErrorNotification(e);
     }
   };
 
-  const onSubmit: SubmitHandler<dataForm> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<dataForm> = (data) => handleRegister(data);
 
   useEffect(() => {
     for (const key in error) {
@@ -135,6 +134,7 @@ const RegisterMainComponent = () => {
                 errors={errors}
                 label='Password'
                 required={{ value: true, message: "Password harus diisi" }}
+                minLength={{ value: 8, message: "Panjang password minimal 8 karakter"}}
               />
               <InputComponent
                 name='repeat_password'
@@ -145,9 +145,9 @@ const RegisterMainComponent = () => {
                 register={register}
                 errors={errors}
                 label='Ulangi Password'
-                /* validate={(value: string) =>
+                validate={(value: string) =>
                   value === getValues("password") || "Password tidak cocok"
-                } */
+                } 
               />
           </div>
           <div className='mb-8'>
