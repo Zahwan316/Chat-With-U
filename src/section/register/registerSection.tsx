@@ -75,7 +75,7 @@ const RegisterMainComponent = () => {
             <InputComponent
               name='fullname'
               onChange={handleForm}
-              placeholder='Nama Lengkap'
+              placeholder='lorem...'
               type='text'
               usingIcon={false}
               register={register}
@@ -86,7 +86,7 @@ const RegisterMainComponent = () => {
             <InputComponent
               name='username'
               onChange={handleForm}
-              placeholder='Username'
+              placeholder='lorem...'
               type='text'
               usingIcon={false}
               register={register}
@@ -99,7 +99,7 @@ const RegisterMainComponent = () => {
             <InputComponent
               name='email'
               onChange={handleForm}
-              placeholder='Email'
+              placeholder='lorem@example.com'
               type='text'
               usingIcon={false}
               register={register}
@@ -111,7 +111,7 @@ const RegisterMainComponent = () => {
             <InputComponent
               name='number_phone'
               onChange={handleForm}
-              placeholder='Nomor Telepon'
+              placeholder='08....'
               type='number'
               usingIcon={false}
               register={register}
@@ -127,7 +127,7 @@ const RegisterMainComponent = () => {
               <InputComponent
                 name='password'
                 onChange={handleForm}
-                placeholder='Password'
+                placeholder='Password Anda'
                 type='password'
                 usingIcon={false}
                 register={register}

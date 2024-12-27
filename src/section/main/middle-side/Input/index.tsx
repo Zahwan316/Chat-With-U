@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef } from "react"
+import { ChangeEvent, useRef } from "react"
 import useFormStore from "../../../../state/form"
 import useChatStore from "../../../../state/chat"
 import io from "socket.io-client"
@@ -18,10 +18,11 @@ const InputChatComponent = () => {
   const userinfo = useUserStore((state) => state.userinfo)
   const sessionChat = useChatStore((state) => state.sessionChat)
   const token = Cookies.get("token")
+  const addchat = useChatStore((state) => state.addChat);
 
   const sendMsg = () => {
-
     socket.emit("message", senderData)
+    //addchat(senderData)
     resetform()
   }
 
@@ -57,10 +58,6 @@ const InputChatComponent = () => {
     }
   }
 
-  useEffect(() => {
-
-  })
-
   return (
     <div className={`border-t border-white p-4 flex items-center h-20 gap-4 ${sessionChat === "" && "hidden"}`} >
       <div className="cursor-pointer">
@@ -73,7 +70,6 @@ const InputChatComponent = () => {
         {
           form?.textchat?.length > 0 &&
           <Icons.sendIcon fontsize="35" />
-
         }
       </div>
     </div>

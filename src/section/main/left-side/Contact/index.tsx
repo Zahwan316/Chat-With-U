@@ -29,19 +29,25 @@ const ContactComponent = () => {
 
   useEffect(() => {
     //sort date from older chat
-    const chatDateSort = chat.sort((a, b) => {
+    const chatDateSort = [...chat].sort((a, b) => {
       const dateA = new Date(a.created_Date || "").getTime()
       const dateB = new Date(b.created_Date || "").getTime()
-      return dateA - dateB
+      return dateB - dateA
     })
 
-    //find chat and set chat only 1 newest per user who chat this user
-    const uniqueChat = chatDateSort.filter((item, index, self) =>
-      index === self.findIndex((t) => (
-        (t.user_from_id === item.user_from_id && t.user_target_id === item.user_target_id && item.group_id === null) ||
-        (t.user_from_id === item.user_target_id && t.user_target_id === item.user_from_id && item.group_id === null)
-      ))
-    );
+    const chatMap = new Map()
+
+    chatDateSort.forEach((item) => {
+      const chatKey = item.group_id != null ? `group-${item.group_id}` : [item.user_from_id, item.user_target_id].sort().join("-")
+      
+      if(!chatMap.has(chatKey)){
+        chatMap.set(chatKey, item)
+      }
+    })
+
+    const uniqueChat = Array.from(chatMap.values())
+
+    console.log("'contact component' Chat date sort : ", chatMap)
     setfilteredChat(uniqueChat)
   }, [chat])
 
@@ -62,7 +68,7 @@ const ContactComponent = () => {
   }
 
   useEffect(() => {
-
+    //console.log("'Contact Component' filtered chat : ",filteredChat)
   })
 
   return (
@@ -130,7 +136,6 @@ const ContactComponent = () => {
               }
             }
           }
-            //item?.user_from_id !== userinfo?.id  &&
           )
         )
       }

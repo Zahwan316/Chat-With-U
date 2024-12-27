@@ -24,7 +24,7 @@ const MainChatComponent = memo(() => {
       addchat(message);
       setUnreadChat([message]);
     });
-  }, []);
+  }, [addchat, setUnreadChat]);
 
   //filter chat every user send
   useEffect(() => {
@@ -44,7 +44,7 @@ const MainChatComponent = memo(() => {
   }, [chatdata, SessionChat, userinfo]);
 
   useEffect(() => {
-    console.log(chatfilter);
+    console.log("'Main chat Component' filtered chat : ",chatfilter);
   });
 
   return (
